@@ -61,7 +61,7 @@ public class Post {
                 "\nCurtidas: " + curtidas.size() + "\n";
     }
 
-    private void adicionarCurtida(Usuario usuario) {
+    public void adicionarCurtida(Usuario usuario) {
         Boolean jaCurtiu = false;
 
         for (Usuario curtidor : curtidas) {
@@ -78,7 +78,7 @@ public class Post {
         }
     }
 
-    private void removerCurtida(Usuario usuario) {
+    public void removerCurtida(Usuario usuario) {
         for (Usuario curtidor : curtidas) {
             if (usuario == curtidor) {
                 System.out.println("Curtida removida com sucesso!");
