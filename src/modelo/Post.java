@@ -10,6 +10,7 @@ public class Post {
     private String conteudo;
     private LocalDateTime dataPublicacao;
     private List<Usuario> curtidas;
+    private List<Comentario> comentarios;
 
     public Post(Integer id, Usuario autor, String conteudo, LocalDateTime dataPublicacao, List<Usuario> curtidas) {
         this.id = id;
@@ -17,6 +18,7 @@ public class Post {
         this.conteudo = conteudo;
         this.dataPublicacao = dataPublicacao;
         this.curtidas = new ArrayList<>();
+        this.comentarios = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -62,20 +64,15 @@ public class Post {
     }
 
     public void adicionarCurtida(Usuario usuario) {
-        Boolean jaCurtiu = false;
-
         for (Usuario curtidor : curtidas) {
             if (usuario == curtidor) {
-                jaCurtiu = true;
                 System.out.printf("O usuário %s já curtiu este post.%n", curtidor.getNome());
-                break;
+                return;
             }
         }
 
-        if (!jaCurtiu) {
-            curtidas.add(usuario);
-            System.out.println("Curtida adicionada com sucesso!");
-        }
+        curtidas.add(usuario);
+        System.out.println("Curtida adicionada com sucesso!");
     }
 
     public void removerCurtida(Usuario usuario) {
@@ -87,5 +84,9 @@ public class Post {
         }
 
         System.out.println("Este usuário não curtiu o post, por isto, não foi possível remover a curtida.");
+    }
+
+    public void adicionarComentario(Comentario comentario) {
+        this.comentarios.add(comentario);
     }
 }
