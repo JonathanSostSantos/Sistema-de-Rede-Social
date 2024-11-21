@@ -1,5 +1,6 @@
 package gerenciador;
 
+import modelo.Comentario;
 import modelo.Post;
 import modelo.Usuario;
 
@@ -44,5 +45,32 @@ public class GerenciadorPosts {
     }
 
     public void curtir(int idPost, int idUsuario) {
+        GerenciadorUsuarios gerenciador = new GerenciadorUsuarios();
+        Usuario usuario = gerenciador.buscarPorId(idUsuario);
+
+        for (Post p : posts) {
+            if (p.getId() == idPost) {
+                p.adicionarCurtida(usuario);
+            }
+        }
+    }
+
+    public void descurtir(int idPost, int idUsuario) {
+        GerenciadorUsuarios gerenciador = new GerenciadorUsuarios();
+        Usuario usuario = gerenciador.buscarPorId(idUsuario);
+
+        for (Post p : posts) {
+            if (p.getId() == idPost) {
+                p.removerCurtida(usuario);
+            }
+        }
+    }
+
+    public void comentar(int idPost, Comentario comentario) {
+        buscarPorId(idPost).adicionarComentario(comentario);
+    }
+
+    public boolean deletar(int id) {
+        return posts.removeIf(p -> p.getId() == id);
     }
 }
