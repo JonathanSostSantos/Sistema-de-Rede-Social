@@ -13,7 +13,7 @@ public class Usuario {
     private LocalDateTime dataCadastro;
     private List<Usuario> amigos;
 
-    public Usuario(String nome, String username, String email, String senha, LocalDateTime dataCadastro, List<Usuario> amigos) {
+    public Usuario(String nome, String username, String email, String senha, LocalDateTime dataCadastro) {
         this.nome = nome;
         this.username = username;
         this.email = email;
@@ -64,10 +64,6 @@ public class Usuario {
 
     public LocalDateTime getDataCadastro() {
         return dataCadastro;
-    }
-
-    public void setDataCadastro(LocalDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
     }
 
     @Override
