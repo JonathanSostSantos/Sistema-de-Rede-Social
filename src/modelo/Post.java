@@ -67,9 +67,9 @@ public class Post {
     public String toString() {
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
         return ConsoleColors.BLUE_BOLD_BRIGHT + autor.getNome() + ConsoleColors.RESET + " - " +
-                ConsoleColors.WHITE_UNDERLINED + dataPublicacao.format(formatador) + ConsoleColors.RESET + "\n\n" +
+                ConsoleColors.WHITE_UNDERLINED + dataPublicacao.format(formatador) + ConsoleColors.RESET + "\n" +
                 ConsoleColors.WHITE_BOLD_BRIGHT + conteudo +
-                "\n👍 " + curtidas.size() + "\n";
+                ConsoleColors.BLACK_BOLD_BRIGHT + "\n👍 " + curtidas.size() + "  💬 " + comentarios.size() + "\n";
     }
 
     public void adicionarCurtida(Usuario usuario) {
