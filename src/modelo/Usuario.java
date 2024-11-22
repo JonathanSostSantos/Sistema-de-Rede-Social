@@ -12,6 +12,7 @@ public class Usuario {
     private String senha;
     private LocalDateTime dataCadastro;
     private List<Usuario> amigos;
+    private List<Post> posts;
 
     public Usuario(String nome, String username, String email, String senha, LocalDateTime dataCadastro) {
         this.nome = nome;
@@ -20,6 +21,7 @@ public class Usuario {
         this.senha = senha;
         this.dataCadastro = dataCadastro;
         this.amigos = new ArrayList<>();
+        this.posts = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -99,5 +101,9 @@ public class Usuario {
 
     public void removerAmigo(Usuario amigo) {
         this.amigos.remove(amigo);
+    }
+
+    public void adicionarPost(Post post) {
+        this.posts.add(post);
     }
 }
