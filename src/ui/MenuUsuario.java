@@ -16,9 +16,13 @@ public class MenuUsuario {
         this.usuarioLogado = usuarioLogado;
     }
 
+    public MenuUsuario() {
+        this.leitor = new Scanner(System.in);
+        menu = new MenuPrincipal();
+    }
+
     public void exibirMenu() {
         Integer opcaoSelecionada;
-        menu = new MenuPrincipal();
         System.out.println(ConsoleColors.CYAN_BOLD_BRIGHT + "Bem-vindo(a) de volta, " + ConsoleColors.GREEN_BOLD_BRIGHT + usuarioLogado.getNome() + ConsoleColors.CYAN_BOLD_BRIGHT + "!" + ConsoleColors.RESET);
         while(true) {
             System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "\n\nO que você deseja fazer?" + ConsoleColors.RESET);
