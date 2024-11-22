@@ -1,6 +1,9 @@
 package modelo;
 
+import ui.ConsoleColors;
+
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,14 +81,10 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario {" +
-                " ID: " + id +
-                ", Nome: '" + nome + '\'' +
-                ", Username: '" + username + '\'' +
-                ", Email: '" + email + '\'' +
-                ", Senha: '" + senha + '\'' +
-                ", Data de cadastro: " + dataCadastro +
-                " }";
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
+        return ConsoleColors.BLUE_BOLD_BRIGHT + nome +
+                ConsoleColors.WHITE_BOLD + " @" + username +
+                "\nData de cadastro: " + dataCadastro.format(formatador) + "\n";
     }
 
     @Override
