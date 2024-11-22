@@ -91,7 +91,7 @@ public class MenuPrincipal {
         Usuario usuario;
 
         while (true) {
-            System.out.print(ConsoleColors.WHITE_UNDERLINED + "Informe seu nome de usuário: " + ConsoleColors.RESET);
+            System.out.print(ConsoleColors.WHITE_UNDERLINED + "Informe seu nome de usuário:" + ConsoleColors.RESET);
             username = leitor.nextLine();
             usuario = gerenciador.buscarPorUsername(username);
 
@@ -99,7 +99,7 @@ public class MenuPrincipal {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Não há um usuário cadastrado com este nome. Tente novamente." + ConsoleColors.RESET);
             } else {
                 while (true) {
-                    System.out.print(ConsoleColors.WHITE_UNDERLINED + "Informe sua senha: " + ConsoleColors.RESET);
+                    System.out.print(ConsoleColors.WHITE_UNDERLINED + "Informe sua senha:" + ConsoleColors.RESET);
                     try {
                         if (usuario.getSenha().equals(encriptarSenha(leitor.nextLine().trim(), chave))) {
                             System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Login efetuado!" + ConsoleColors.RESET);
