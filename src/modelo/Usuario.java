@@ -68,6 +68,14 @@ public class Usuario {
         return dataCadastro;
     }
 
+    public List<Usuario> getAmigos() {
+        return amigos;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
     @Override
     public String toString() {
         return "Usuario {" +
