@@ -1,6 +1,7 @@
 package ui;
 
 import gerenciador.GerenciadorUsuarios;
+import modelo.Post;
 import modelo.Usuario;
 
 import javax.crypto.Cipher;
@@ -24,6 +25,7 @@ public class MenuPrincipal {
 
     public void exibirMenu() {
         Integer opcaoSelecionada;
+        Usuario usuario1 = null;
         try {
             chave = gerarChave();
         } catch (Exception e) {
@@ -31,10 +33,33 @@ public class MenuPrincipal {
         }
 
         try {
-            gerenciador.cadastrar(new Usuario("teste da silva", "teste", "teste@gmail.com", encriptarSenha("Teste1200", chave), LocalDateTime.now()));
+            usuario1 = new Usuario("teste da silva", "teste", "teste@gmail.com", encriptarSenha("Teste1200", chave), LocalDateTime.now());
+            gerenciador.cadastrar(usuario1);
         } catch (Exception e) {
             System.out.println("Ocorreu um erro ao gerar os testes unitários.\nMensagem de erro: " + e.getMessage());
         }
+
+        usuario1.adicionarPost(new Post(usuario1, "Se rir fosse exercício, já estaríamos todos marombeiros por aqui! #Funwitter", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Alguém aí sabe como fazer café sem se apaixonar pelo cheiro? Perguntando para um amigo... ☕❤ #FunwitterMoment", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Dizem que rir é o melhor remédio. Bem, aqui somos uma farmácia completa!", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Se o tédio fosse esporte olímpico, já estaria com várias medalhas de ouro. #BoraRir", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Errado é quem não erra. A gente erra, mas com estilo! ✌", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Será que a pizza pensa em mim tanto quanto eu penso nela?", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Dormir cedo é overrated. Vamos rir até o sol nascer! #NoiteDivertida", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Quem nunca colocou um lembrete e esqueceu do lembrete, não sabe o que é aventura. ⏰♂", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "A meta é ser tão engraçado quanto meu reflexo quando acordo.", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Se o mundo te der limões, faça memes. \uD83C\uDF4B\uD83D\uDE02 #MemeLife", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Estudo revela: pessoas que seguem o Funwitter são 100% mais felizes. Ciência (talvez)!", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Hoje eu acordei com vontade de ser saudável... Aí lembrei que o chocolate também tem alma.", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Se escrever errado fosse arte, eu já seria um Picasso das palavras. #ArteDaGafe", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Qual é o plural de 'Internet caindo'? Apocalipse!", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Minha relação com a academia é como a do Wi-Fi: às vezes conecta, às vezes não.", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Acordar cedo é tipo spoiler do dia, não quero saber. #DorminhocosUnidos", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Quem inventou o trabalho antes das 10 da manhã claramente não tomava café. ☕⏳", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "A vida é como um meme: às vezes você entende, às vezes só ri. #FunwitterFilosófico", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Sabe o que combina com sexta-feira? Tudo, menos trabalho. ✌ #VivaSexta", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Procurando motivo para sorrir? Olha para cima, tá escrito 'Funwitter'!", LocalDateTime.now()));
+        usuario1.adicionarPost(new Post(usuario1, "Hoje descobri que meu talento especial é lembrar de algo importante só depois que já é tarde demais. ⏳ #SuperPoderInútil", LocalDateTime.now()));
 
         while (true) {
             System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "===███████ ██    ██ ███    ██ ██     ██ ██ ████████ ████████ ███████ ██████===  \n" +
