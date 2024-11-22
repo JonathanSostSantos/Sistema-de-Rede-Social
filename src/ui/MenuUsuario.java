@@ -14,7 +14,8 @@ public class MenuUsuario {
     private MenuPrincipal menu;
     private Scanner leitor;
     private Usuario usuarioLogado;
-    private GerenciadorUsuarios gerenciador;
+    private GerenciadorUsuarios gerenciadorUsuarios;
+    private GerenciadorPosts gerenciadorPosts;
 
     public void setUsuarioLogado(Usuario usuarioLogado) {
         this.usuarioLogado = usuarioLogado;
@@ -23,11 +24,35 @@ public class MenuUsuario {
     public MenuUsuario() {
         this.leitor = new Scanner(System.in);
         menu = new MenuPrincipal();
-        gerenciador = new GerenciadorUsuarios();
+        gerenciadorUsuarios = new GerenciadorUsuarios();
+        gerenciadorPosts = new GerenciadorPosts();
     }
 
     public void exibirMenu() {
         Integer opcaoSelecionada;
+
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Se rir fosse exercício, já estaríamos todos marombeiros por aqui! #Funwitter", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Alguém aí sabe como fazer café sem se apaixonar pelo cheiro? Perguntando para um amigo... ☕❤ #FunwitterMoment", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Dizem que rir é o melhor remédio. Bem, aqui somos uma farmácia completa!", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Se o tédio fosse esporte olímpico, já estaria com várias medalhas de ouro. #BoraRir", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Errado é quem não erra. A gente erra, mas com estilo! ✌", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Será que a pizza pensa em mim tanto quanto eu penso nela?", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Dormir cedo é overrated. Vamos rir até o sol nascer! #NoiteDivertida", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Quem nunca colocou um lembrete e esqueceu do lembrete, não sabe o que é aventura. ⏰♂", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "A meta é ser tão engraçado quanto meu reflexo quando acordo.", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Se o mundo te der limões, faça memes. \uD83C\uDF4B\uD83D\uDE02 #MemeLife", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Estudo revela: pessoas que seguem o Funwitter são 100% mais felizes. Ciência (talvez)!", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Hoje eu acordei com vontade de ser saudável... Aí lembrei que o chocolate também tem alma.", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Se escrever errado fosse arte, eu já seria um Picasso das palavras. #ArteDaGafe", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Qual é o plural de 'Internet caindo'? Apocalipse!", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Minha relação com a academia é como a do Wi-Fi: às vezes conecta, às vezes não.", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Acordar cedo é tipo spoiler do dia, não quero saber. #DorminhocosUnidos", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Quem inventou o trabalho antes das 10 da manhã claramente não tomava café. ☕⏳", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "A vida é como um meme: às vezes você entende, às vezes só ri. #FunwitterFilosófico", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Sabe o que combina com sexta-feira? Tudo, menos trabalho. ✌ #VivaSexta", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Procurando motivo para sorrir? Olha para cima, tá escrito 'Funwitter'!", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Hoje descobri que meu talento especial é lembrar de algo importante só depois que já é tarde demais. ⏳ #SuperPoderInútil", LocalDateTime.now()));
+
         System.out.println(ConsoleColors.CYAN_BOLD_BRIGHT + "Bem-vindo(a) de volta, " + ConsoleColors.GREEN_BOLD_BRIGHT + usuarioLogado.getNome() + ConsoleColors.CYAN_BOLD_BRIGHT + "!" + ConsoleColors.RESET);
         while (true) {
             System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "\n\nO que você deseja fazer?" + ConsoleColors.RESET);
@@ -68,7 +93,6 @@ public class MenuUsuario {
 
     private void criarPost() {
         String valorInserido;
-        GerenciadorPosts gerenciador = new GerenciadorPosts();
         while (true) {
             System.out.print(ConsoleColors.BLUE_BOLD_BRIGHT + "Digite o que você está pensando (máximo 255 caracteres): " + ConsoleColors.RESET);
             valorInserido = leitor.nextLine();
@@ -83,7 +107,7 @@ public class MenuUsuario {
             } else if (valorInserido.length() <= 0) {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "O post não pode estar vazio." + ConsoleColors.RESET);
             } else {
-                gerenciador.criar(new Post(usuarioLogado, valorInserido, LocalDateTime.now()));
+                gerenciadorPosts.criar(new Post(usuarioLogado, valorInserido, LocalDateTime.now()));
                 System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Post publicado com sucesso!" + ConsoleColors.RESET);
                 break;
             }
@@ -121,90 +145,105 @@ public class MenuUsuario {
         }
     }
 
-    private void verPosts() {
+    private Integer listarPostsPaginados(List<Post> posts) {
         Integer pagina = 0;
-        List<Post> posts = usuarioLogado.getPosts();
         Integer totalPosts = posts.size();
         Integer totalPaginas;
         Integer postsNaPagina;
         String valorInserido;
         Integer opcaoSelecionada;
-        Post postSelecionado = null;
-        Boolean postEstaSelecionado;
+        Post postSelecionado;
 
         if (totalPosts <= 0) {
-            System.out.println("Você não possui nenhum post, que tal fazer seu primeiro?");
-        } else {
-            totalPaginas = totalPosts / 10;
-            System.out.println("Seus posts:");
+            System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Nenhum post a ser mostrado aqui.");
+            return -1;
+        }
 
-            while (true) {
-                postsNaPagina = pagina.equals(totalPaginas) ? totalPosts % 10 : 10;
-                for (int i = pagina * 10; i < (pagina * 10) + postsNaPagina; i++) {
-                    System.out.println(ConsoleColors.WHITE + (1 + i % 10) + "- " + ConsoleColors.RESET + posts.get(i));
-                }
-                System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "\n" + (pagina > 0 ? pagina > 1 ? "<< <" : "<" : "") + " Página " + (pagina + 1) + " de " + (totalPaginas + 1) + (pagina < totalPaginas ? pagina < totalPaginas - 1 ? " > >>" : " >" : "" + ConsoleColors.RESET));
-                System.out.println(ConsoleColors.WHITE_UNDERLINED + "(Selecione o post para interagir ou digite 0 para retornar)" + ConsoleColors.RESET);
-                valorInserido = leitor.nextLine();
-                switch (valorInserido.trim()) {
-                    case "<<":
-                        if (pagina > 1) pagina = 0;
-                        break;
-                    case "<":
-                        if (pagina > 0) pagina--;
-                        break;
-                    case ">":
-                        if (pagina < totalPaginas) pagina++;
-                        break;
-                    case ">>":
-                        if (pagina < (totalPaginas - 1)) pagina = totalPaginas;
-                        break;
-                    case "0":
-                        return;
-                    default:
-                        if (valorInserido.matches("[0-9]+")) {
-                            opcaoSelecionada = menu.validarEntradaInteira(valorInserido);
-                            if (opcaoSelecionada <= 10 && opcaoSelecionada > 0) {
-                                postSelecionado = posts.get(opcaoSelecionada - 1 + (pagina * 10));
-                            }
+        totalPaginas = totalPosts / 10;
 
-                            postEstaSelecionado = postSelecionado != null;
+        while (true) {
+            postsNaPagina = pagina.equals(totalPaginas) ? totalPosts % 10 : 10;
+            for (int i = pagina * 10; i < (pagina * 10) + postsNaPagina; i++) {
+                System.out.println(ConsoleColors.WHITE + (1 + i % 10) + "- " + ConsoleColors.RESET + posts.get(i));
+            }
+            System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "\n" + (pagina > 0 ? pagina > 1 ? "<< <" : "<" : "") + " Página " + (pagina + 1) + " de " + (totalPaginas + 1) + (pagina < totalPaginas ? pagina < totalPaginas - 1 ? " > >>" : " >" : "" + ConsoleColors.RESET));
+            System.out.println(ConsoleColors.WHITE_UNDERLINED + "(Selecione o post para interagir ou digite 0 para retornar)" + ConsoleColors.RESET);
+            valorInserido = leitor.nextLine();
 
-                            if (!postEstaSelecionado) {
-                                System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "O post selecionado é inválido!" + ConsoleColors.RESET);
-                            }
+            switch (valorInserido) {
+                case "<<":
+                    if (pagina > 1) pagina = 0;
+                    break;
+                case "<":
+                    if (pagina > 0) pagina--;
+                    break;
+                case ">":
+                    if (pagina < totalPaginas) pagina++;
+                    break;
+                case ">>":
+                    if (pagina < (totalPaginas - 1)) pagina = totalPaginas;
+                    break;
+                case "0":
+                    return -1;
+                default:
+                    if (valorInserido.matches("[0-9]+")) {
+                        opcaoSelecionada = menu.validarEntradaInteira(valorInserido);
 
-                            while (postEstaSelecionado) {
-                                System.out.println(postSelecionado);
-                                System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Mostrar curtidas");
-                                System.out.println("2- Mostrar comentários");
-                                System.out.println("3- Deletar");
-                                System.out.println("4- Voltar" + ConsoleColors.RESET);
-
-                                opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
-                                if (opcaoSelecionada != null) {
-                                    switch (opcaoSelecionada) {
-                                        case 1:
-                                            mostrarCurtidas(postSelecionado);
-                                            break;
-                                        case 2:
-                                            mostrarComentarios(postSelecionado);
-                                            break;
-                                        case 3:
-                                            deletarPost(postSelecionado);
-                                            break;
-                                        case 4:
-                                            postEstaSelecionado = false;
-                                            break;
-                                    }
-                                }
-                            }
+                        if ((pagina.equals(totalPaginas) && opcaoSelecionada > totalPosts % 10) || (opcaoSelecionada > 10 || opcaoSelecionada < 0)) {
+                            System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "O post selecionado não existe." + ConsoleColors.RESET);
+                            break;
                         }
-                        break;
+
+                        postSelecionado = posts.get(opcaoSelecionada - 1 + (pagina * 10));
+
+                        if (postSelecionado != null) {
+                            return postSelecionado.getId();
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void verPosts() {
+        Boolean postEstaSelecionado;
+        Post postSelecionado;
+        Integer opcaoSelecionada;
+
+        while (true) {
+            System.out.println("Seus posts:");
+            postSelecionado = gerenciadorPosts.buscarPorId(listarPostsPaginados(usuarioLogado.getPosts()));
+
+            postEstaSelecionado = postSelecionado != null;
+
+            while (postEstaSelecionado) {
+                System.out.println(postSelecionado);
+                System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Mostrar curtidas");
+                System.out.println("2- Mostrar comentários");
+                System.out.println("3- Deletar");
+                System.out.println("4- Voltar" + ConsoleColors.RESET);
+
+                opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
+                if (opcaoSelecionada != null) {
+                    switch (opcaoSelecionada) {
+                        case 1:
+                            mostrarCurtidas(postSelecionado);
+                            break;
+                        case 2:
+                            mostrarComentarios(postSelecionado);
+                            break;
+                        case 3:
+                            deletarPost(postSelecionado);
+                            break;
+                        case 4:
+                            postEstaSelecionado = false;
+                            break;
+                    }
                 }
             }
         }
     }
+
 
     private void editarPerfil() {
 
@@ -221,7 +260,7 @@ public class MenuUsuario {
             System.out.println("Digite o nome do usuário a ser buscado:");
             valorInserido = leitor.nextLine();
 
-            usuarios = gerenciador.buscarPorNome(valorInserido);
+            usuarios = gerenciadorUsuarios.buscarPorNome(valorInserido);
 
             if (usuarios.isEmpty()) {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Não foram encontrados resultados com esta pesquisa." + ConsoleColors.RESET);
