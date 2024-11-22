@@ -33,6 +33,7 @@ public class MenuPrincipal {
         try {
             gerenciador.cadastrar(new Usuario("teste da silva", "teste", "teste@gmail.com", encriptarSenha("Teste1200", chave), LocalDateTime.now()));
         } catch (Exception e) {
+            System.out.println("Ocorreu um erro ao gerar os testes unitários.\nMensagem de erro: " + e.getMessage());
         }
 
         while (true) {
