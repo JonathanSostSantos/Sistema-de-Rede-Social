@@ -23,6 +23,7 @@ public class Post {
         this.dataPublicacao = dataPublicacao;
         this.curtidas = new ArrayList<>();
         this.comentarios = new ArrayList<>();
+        autor.adicionarPost(this);
         proximoId++;
     }
 
