@@ -66,7 +66,7 @@ public class Post {
     @Override
     public String toString() {
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
-        return ConsoleColors.BLUE_BOLD_BRIGHT + autor.getNome() + ConsoleColors.RESET + " - " +
+        return ConsoleColors.BLUE_BOLD_BRIGHT + autor.getNome() + ConsoleColors.WHITE_BOLD + " @" + autor.getUsername() + ConsoleColors.RESET + " - " +
                 ConsoleColors.WHITE_UNDERLINED + dataPublicacao.format(formatador) + ConsoleColors.RESET + "\n" +
                 ConsoleColors.WHITE_BOLD_BRIGHT + conteudo +
                 ConsoleColors.BLACK_BOLD_BRIGHT + "\n👍 " + curtidas.size() + "  💬 " + comentarios.size() + "\n";
