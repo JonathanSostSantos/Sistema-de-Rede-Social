@@ -32,7 +32,7 @@ public class GerenciadorUsuarios {
 
     public Usuario buscarPorUsername(String username) {
         for(Usuario u : usuarios) {
-            if (u.getNome().equalsIgnoreCase(username)) {
+            if (u.getUsername().equalsIgnoreCase(username)) {
                 return u;
             }
         }
@@ -50,6 +50,18 @@ public class GerenciadorUsuarios {
         }
 
         return usuariosARetornar;
+    }
+
+    public Usuario buscarPorEmail(String email) {
+        List<Usuario> usuariosARetornar = new ArrayList<>();
+
+        for(Usuario u : usuarios) {
+            if (u.getNome().equalsIgnoreCase(email)) {
+                return u;
+            }
+        }
+
+        return null;
     }
 
     public boolean atualizar(Usuario usuario) {
