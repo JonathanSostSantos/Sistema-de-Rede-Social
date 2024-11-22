@@ -73,6 +73,41 @@ public class MenuUsuario {
     }
 
     private void verPerfil() {
+        Integer opcaoSelecionada;
+
+        while (true) {
+            System.out.println(ConsoleColors.BLUE_UNDERLINED + menu.getUsuarioLogado() + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Ver posts");
+            System.out.println("2- Amigos");
+            System.out.println("3- Editar perfil");
+            System.out.println("4- Voltar" + ConsoleColors.RESET);
+            opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
+
+            if (opcaoSelecionada != null) {
+                switch (opcaoSelecionada) {
+                    case 1:
+                        verPosts();
+                        break;
+                    case 2:
+                        gerenciarAmizades();
+                        break;
+                    case 3:
+                        editarPerfil();
+                        break;
+                    case 4:
+                        return;
+                    default:
+                        System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Opção inexistente." + ConsoleColors.RESET);
+                }
+            }
+        }
+    }
+
+    private void verPosts() {
+
+    }
+
+    private void editarPerfil() {
 
     }
 
