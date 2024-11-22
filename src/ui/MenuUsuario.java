@@ -144,7 +144,7 @@ public class MenuUsuario {
                     System.out.println(ConsoleColors.WHITE + (1 + i % 10) + "- " + ConsoleColors.RESET + posts.get(i));
                 }
                 System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "\n" + (pagina > 0 ? pagina > 1 ? "<< <" : "<" : "") + " Página " + (pagina + 1) + " de " + (totalPaginas + 1) + (pagina < totalPaginas ? pagina < totalPaginas - 1 ? " > >>" : " >" : "" + ConsoleColors.RESET));
-                System.out.println(ConsoleColors.WHITE_UNDERLINED + "(Digite 0 para retornar)" + ConsoleColors.RESET);
+                System.out.println(ConsoleColors.WHITE_UNDERLINED + "(Selecione o post para interagir ou digite 0 para retornar)" + ConsoleColors.RESET);
                 valorInserido = leitor.nextLine();
                 switch (valorInserido.trim()) {
                     case "<<":
@@ -229,9 +229,9 @@ public class MenuUsuario {
             }
 
             for (int i = 0; i < usuarios.size(); i++) {
-                System.out.println(ConsoleColors.WHITE_BOLD + (i+1) + ConsoleColors.RESET + "- " + usuarios.get(i));
+                System.out.println(ConsoleColors.WHITE_BOLD + (i + 1) + ConsoleColors.RESET + "- " + usuarios.get(i));
             }
-            System.out.println(ConsoleColors.WHITE_UNDERLINED + "(Digite 0 para retornar)" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.WHITE_UNDERLINED + "(Selecione o usuário para interagir ou digite 0 para retornar)" + ConsoleColors.RESET);
 
             opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
 
@@ -269,7 +269,41 @@ public class MenuUsuario {
     }
 
     private void gerenciarAmizades() {
+        List<Usuario> amigos = usuarioLogado.getAmigos();
+        Usuario amigo;
+        Integer opcaoSelecionada;
 
+        if (amigos.isEmpty()) {
+            System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Sua lista de amigos está vazia.");
+            return;
+        }
+
+        while (true) {
+            System.out.println(ConsoleColors.BLUE_BACKGROUND + "==== Lista de amigos ====" + ConsoleColors.RESET);
+            for (int i = 0; i < amigos.size(); i++) {
+                System.out.println(ConsoleColors.WHITE_BOLD + (i + 1) + "- " + ConsoleColors.RESET + amigos.get(i));
+            }
+
+            System.out.println(ConsoleColors.WHITE_UNDERLINED + "(Selecione um amigo para interagir ou digite 0 para retornar)" + ConsoleColors.RESET);
+            opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
+
+            if (opcaoSelecionada != null && opcaoSelecionada < amigos.size()) {
+                amigo = amigos.get(opcaoSelecionada);
+                System.out.println(amigo);
+                System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Remover amigo");
+                System.out.println("2- Voltar" + ConsoleColors.RESET);
+
+                switch (opcaoSelecionada) {
+                    case 1:
+                        usuarioLogado.removerAmigo(amigo);
+                        amigo.removerAmigo(usuarioLogado);
+                        System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Amigo removido com sucesso!" + ConsoleColors.RESET);
+                        break;
+                    case 2:
+                        return;
+                }
+            }
+        }
     }
 
     private void verFeedNoticias() {
