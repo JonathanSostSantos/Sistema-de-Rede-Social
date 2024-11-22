@@ -83,7 +83,7 @@ public class Post {
             }
         }
 
-        System.out.println("Este usuário não curtiu o post, por isto, não foi possível remover a curtida.");
+        System.out.println("Este usuário não curtiu o post, por isto, não foi possível removê-la.");
     }
 
     public void adicionarComentario(Comentario comentario) {
