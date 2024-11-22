@@ -14,13 +14,16 @@ public class Post {
     private LocalDateTime dataPublicacao;
     private List<Usuario> curtidas;
     private List<Comentario> comentarios;
+    private Integer proximoId = 1;
 
     public Post(Usuario autor, String conteudo, LocalDateTime dataPublicacao) {
+        this.id = proximoId;
         this.autor = autor;
         this.conteudo = conteudo;
         this.dataPublicacao = dataPublicacao;
         this.curtidas = new ArrayList<>();
         this.comentarios = new ArrayList<>();
+        proximoId++;
     }
 
     public Integer getId() {
