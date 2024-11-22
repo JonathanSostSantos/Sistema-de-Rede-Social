@@ -12,18 +12,27 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class MenuPrincipal {
-    private Scanner leitor = new Scanner(System.in);
-    private GerenciadorUsuarios gerenciador = new GerenciadorUsuarios();
+    private Scanner leitor;
+    private GerenciadorUsuarios gerenciador;
     private static final String algoritmo = "AES";
+    private SecretKey chave;
+    private Usuario usuarioLogado;
 
-    SecretKey chave;
+    public Usuario getUsuarioLogado() {
+        return usuarioLogado;
+    }
+
+    public MenuPrincipal() {
+        this.leitor = new Scanner(System.in);
+        this.gerenciador = new GerenciadorUsuarios();
+    }
 
     public void exibirMenu() {
         Integer opcaoSelecionada;
         try {
             chave = gerarChave();
         } catch (Exception e) {
-            System.out.println("Ocorreu um erro inesperado ao gerar a chave de encriptação.\nMensagem de erro: " + e.getMessage());
+            System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Ocorreu um erro inesperado ao gerar a chave de encriptação.\nMensagem de erro: " + e.getMessage() + ConsoleColors.RESET);
         }
 
         while (true) {
@@ -33,7 +42,7 @@ public class MenuPrincipal {
                     "===██      ██    ██ ██  ██ ██ ██ ███ ██ ██    ██       ██    ██      ██   ██=== \n" +
                     "===██       ██████  ██   ████  ███ ███  ██    ██       ██    ███████ ██   ██=== " + ConsoleColors.RESET);
             System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "\n\n1 -> Fazer login");
-            System.out.println("\n2 -> Cadastrar usuário");
+            System.out.println("\n2 -> Cadastrar usuário" + ConsoleColors.RESET);
             opcaoSelecionada = validarEntradaInteira(leitor.nextLine().trim());
 
             if (opcaoSelecionada != null) {
@@ -45,7 +54,7 @@ public class MenuPrincipal {
                         cadastrarUsuario();
                         break;
                     default:
-                        System.out.println("Opção inexistente.");
+                        System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Opção inexistente." + ConsoleColors.RESET);
                 }
             }
         }
@@ -149,7 +158,7 @@ public class MenuPrincipal {
                     senha = encriptarSenha(valorInserido, chave);
                     break;
                 } catch (Exception e) {
-                    System.out.println("Ocorreu um erro ao criar a senha. Tente novamente.\nMensagem de erro: " + e.getMessage());
+                    System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Ocorreu um erro ao criar a senha. Tente novamente.\nMensagem de erro: " + e.getMessage() + ConsoleColors.RESET);
                 }
             }
 
@@ -165,7 +174,9 @@ public class MenuPrincipal {
     }
 
     private void exibirMenuLogado(Usuario usuario) {
-
+        MenuUsuario menu = new MenuUsuario();
+        usuarioLogado = usuario;
+        menu.exibirMenu();
     }
 
     private Integer validarEntradaInteira(String value) {
