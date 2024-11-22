@@ -3,6 +3,7 @@ package modelo;
 import ui.ConsoleColors;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,8 +65,9 @@ public class Post {
 
     @Override
     public String toString() {
-        return ConsoleColors.BLUE_BOLD_BRIGHT + autor.getNome() + ConsoleColors.RESET +
-                ConsoleColors.WHITE_UNDERLINED + dataPublicacao + ConsoleColors.RESET + "\n\n" +
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
+        return ConsoleColors.BLUE_BOLD_BRIGHT + autor.getNome() + ConsoleColors.RESET + " - " +
+                ConsoleColors.WHITE_UNDERLINED + dataPublicacao.format(formatador) + ConsoleColors.RESET + "\n\n" +
                 ConsoleColors.WHITE_BOLD_BRIGHT + conteudo +
                 "\n👍 " + curtidas.size() + "\n";
     }
