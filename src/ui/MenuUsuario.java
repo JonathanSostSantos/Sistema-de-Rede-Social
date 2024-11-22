@@ -37,16 +37,16 @@ public class MenuUsuario {
         gerenciadorPosts.criar(new Post(usuarioLogado, "Se o tédio fosse esporte olímpico, já estaria com várias medalhas de ouro. #BoraRir", LocalDateTime.now()));
         gerenciadorPosts.criar(new Post(usuarioLogado, "Errado é quem não erra. A gente erra, mas com estilo! ✌", LocalDateTime.now()));
         gerenciadorPosts.criar(new Post(usuarioLogado, "Será que a pizza pensa em mim tanto quanto eu penso nela?", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Dormir cedo é overrated. Vamos rir até o sol nascer! #NoiteDivertida", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Dormir cedo é overrated. Vamos rir até o sol nascer! #NoiteDivertida", LocalDateTime.now().withHour(2)));
         gerenciadorPosts.criar(new Post(usuarioLogado, "Quem nunca colocou um lembrete e esqueceu do lembrete, não sabe o que é aventura. ⏰♂", LocalDateTime.now()));
         gerenciadorPosts.criar(new Post(usuarioLogado, "A meta é ser tão engraçado quanto meu reflexo quando acordo.", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Se o mundo te der limões, faça memes. \uD83C\uDF4B\uD83D\uDE02 #MemeLife", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Se o mundo te der limões, faça memes. \uD83C\uDF4B\uD83D\uDE02 #MemeLife", LocalDateTime.now().withHour(6)));
         gerenciadorPosts.criar(new Post(usuarioLogado, "Estudo revela: pessoas que seguem o Funwitter são 100% mais felizes. Ciência (talvez)!", LocalDateTime.now()));
         gerenciadorPosts.criar(new Post(usuarioLogado, "Hoje eu acordei com vontade de ser saudável... Aí lembrei que o chocolate também tem alma.", LocalDateTime.now()));
         gerenciadorPosts.criar(new Post(usuarioLogado, "Se escrever errado fosse arte, eu já seria um Picasso das palavras. #ArteDaGafe", LocalDateTime.now()));
         gerenciadorPosts.criar(new Post(usuarioLogado, "Qual é o plural de 'Internet caindo'? Apocalipse!", LocalDateTime.now()));
         gerenciadorPosts.criar(new Post(usuarioLogado, "Minha relação com a academia é como a do Wi-Fi: às vezes conecta, às vezes não.", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Acordar cedo é tipo spoiler do dia, não quero saber. #DorminhocosUnidos", LocalDateTime.now()));
+        gerenciadorPosts.criar(new Post(usuarioLogado, "Acordar cedo é tipo spoiler do dia, não quero saber. #DorminhocosUnidos", LocalDateTime.now().withHour(4)));
         gerenciadorPosts.criar(new Post(usuarioLogado, "Quem inventou o trabalho antes das 10 da manhã claramente não tomava café. ☕⏳", LocalDateTime.now()));
         gerenciadorPosts.criar(new Post(usuarioLogado, "A vida é como um meme: às vezes você entende, às vezes só ri. #FunwitterFilosófico", LocalDateTime.now()));
         gerenciadorPosts.criar(new Post(usuarioLogado, "Sabe o que combina com sexta-feira? Tudo, menos trabalho. ✌ #VivaSexta", LocalDateTime.now()));
@@ -212,7 +212,7 @@ public class MenuUsuario {
 
         while (true) {
             System.out.println("Seus posts:");
-            postSelecionado = gerenciadorPosts.buscarPorId(listarPostsPaginados(usuarioLogado.getPosts()));
+            postSelecionado = gerenciadorPosts.buscarPorId(listarPostsPaginados(gerenciadorPosts.ordernarPorData(usuarioLogado.getPosts())));
 
             postEstaSelecionado = postSelecionado != null;
 
