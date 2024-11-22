@@ -16,11 +16,6 @@ public class MenuPrincipal {
     private GerenciadorUsuarios gerenciador;
     private static final String algoritmo = "AES";
     private SecretKey chave;
-    private Usuario usuarioLogado;
-
-    public Usuario getUsuarioLogado() {
-        return usuarioLogado;
-    }
 
     public MenuPrincipal() {
         this.leitor = new Scanner(System.in);
@@ -180,7 +175,7 @@ public class MenuPrincipal {
 
     private void exibirMenuLogado(Usuario usuario) {
         MenuUsuario menu = new MenuUsuario();
-        usuarioLogado = usuario;
+        menu.setUsuarioLogado(usuario);
         menu.exibirMenu();
     }
 

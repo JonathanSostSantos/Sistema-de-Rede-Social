@@ -2,6 +2,7 @@ package ui;
 
 import gerenciador.GerenciadorPosts;
 import modelo.Post;
+import modelo.Usuario;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
@@ -9,11 +10,16 @@ import java.util.Scanner;
 public class MenuUsuario {
     private MenuPrincipal menu;
     private Scanner leitor;
+    private Usuario usuarioLogado;
+
+    public void setUsuarioLogado(Usuario usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
+    }
 
     public void exibirMenu() {
         Integer opcaoSelecionada;
         menu = new MenuPrincipal();
-        System.out.println(ConsoleColors.CYAN_BOLD_BRIGHT + "Bem-vindo(a) de volta, " + ConsoleColors.GREEN_BOLD_BRIGHT + menu.getUsuarioLogado().getNome() + ConsoleColors.CYAN_BOLD_BRIGHT + "!" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.CYAN_BOLD_BRIGHT + "Bem-vindo(a) de volta, " + ConsoleColors.GREEN_BOLD_BRIGHT + usuarioLogado.getNome() + ConsoleColors.CYAN_BOLD_BRIGHT + "!" + ConsoleColors.RESET);
         while(true) {
             System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "\n\nO que você deseja fazer?" + ConsoleColors.RESET);
             System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "\n1- Criar post");
@@ -58,7 +64,7 @@ public class MenuUsuario {
             System.out.print(ConsoleColors.BLUE_BOLD_BRIGHT + "Digite o que você está pensando (máximo 255 caracteres): " + ConsoleColors.RESET);
             valorInserido = leitor.nextLine();
 
-            if (menu.getUsuarioLogado() == null) {
+            if (usuarioLogado == null) {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Houve um erro com a autenticação de login. Retornando ao menu." + ConsoleColors.RESET);
                 return;
             } else if (valorInserido.length() > 255) {
@@ -67,7 +73,7 @@ public class MenuUsuario {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "O post não pode estar vazio." + ConsoleColors.RESET);
             }
 
-            gerenciador.criar(new Post(menu.getUsuarioLogado(), valorInserido, LocalDateTime.now()));
+            gerenciador.criar(new Post(usuarioLogado, valorInserido, LocalDateTime.now()));
             System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Post publicado com sucesso!" + ConsoleColors.RESET);
         }
     }
@@ -76,7 +82,7 @@ public class MenuUsuario {
         Integer opcaoSelecionada;
 
         while (true) {
-            System.out.println(ConsoleColors.BLUE_UNDERLINED + menu.getUsuarioLogado() + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.BLUE_UNDERLINED + usuarioLogado.getNome() + ConsoleColors.RESET);
             System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Ver posts");
             System.out.println("2- Amigos");
             System.out.println("3- Editar perfil");
