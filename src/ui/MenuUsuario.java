@@ -122,6 +122,7 @@ public class MenuUsuario {
         List<Post> posts = usuarioLogado.getPosts();
         Integer totalPosts = posts.size();
         Integer totalPaginas;
+        Integer postsNaPagina;
         String valorInserido;
         Integer opcaoSelecionada;
         Post postSelecionado = null;
@@ -134,10 +135,11 @@ public class MenuUsuario {
             System.out.println("Seus posts:");
 
             while (true) {
-                for (int i = pagina * 10; i < (pagina * 10) + 10; i++) {
+                postsNaPagina = pagina.equals(totalPaginas) ? totalPosts % 10 : 10;
+                for (int i = pagina * 10; i < (pagina * 10) + postsNaPagina; i++) {
                     System.out.println(posts.get(i));
                 }
-                System.out.println("\n" + (pagina > 0 ? pagina > 1 ? "<< <" : "<" : "") + " Página " + (pagina + 1) + " de " + (totalPaginas + 1) + (pagina < totalPaginas ? pagina < totalPaginas - 1 ? " >> >" : " >" : ""));
+                System.out.println("\n" + (pagina > 0 ? pagina > 1 ? "<< <" : "<" : "") + " Página " + (pagina + 1) + " de " + (totalPaginas + 1) + (pagina < totalPaginas ? pagina < totalPaginas - 1 ? " > >>" : " >" : ""));
                 System.out.println(ConsoleColors.WHITE_UNDERLINED + "(Digite 0 para retornar)" + ConsoleColors.RESET);
                 valorInserido = leitor.nextLine();
                 switch (valorInserido.trim()) {
