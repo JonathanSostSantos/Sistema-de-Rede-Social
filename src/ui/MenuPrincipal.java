@@ -35,6 +35,11 @@ public class MenuPrincipal {
             System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Ocorreu um erro inesperado ao gerar a chave de encriptação.\nMensagem de erro: " + e.getMessage() + ConsoleColors.RESET);
         }
 
+        try {
+            gerenciador.cadastrar(new Usuario("teste da silva", "teste", "teste@gmail.com", encriptarSenha("Teste1200", chave), LocalDateTime.now()));
+        } catch (Exception e) {
+        }
+
         while (true) {
             System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "===███████ ██    ██ ███    ██ ██     ██ ██ ████████ ████████ ███████ ██████===  \n" +
                     "===██      ██    ██ ████   ██ ██     ██ ██    ██       ██    ██      ██   ██=== \n" +
