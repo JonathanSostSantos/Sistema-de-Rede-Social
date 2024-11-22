@@ -1,6 +1,7 @@
 package ui;
 
 import gerenciador.GerenciadorPosts;
+import modelo.Comentario;
 import modelo.Post;
 import modelo.Usuario;
 
@@ -137,7 +138,7 @@ public class MenuUsuario {
             while (true) {
                 postsNaPagina = pagina.equals(totalPaginas) ? totalPosts % 10 : 10;
                 for (int i = pagina * 10; i < (pagina * 10) + postsNaPagina; i++) {
-                    System.out.println(posts.get(i));
+                    System.out.println(ConsoleColors.WHITE + (1 + i % 10) + "- " + ConsoleColors.RESET + posts.get(i));
                 }
                 System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "\n" + (pagina > 0 ? pagina > 1 ? "<< <" : "<" : "") + " Página " + (pagina + 1) + " de " + (totalPaginas + 1) + (pagina < totalPaginas ? pagina < totalPaginas - 1 ? " > >>" : " >" : "" + ConsoleColors.RESET));
                 System.out.println(ConsoleColors.WHITE_UNDERLINED + "(Digite 0 para retornar)" + ConsoleColors.RESET);
@@ -158,10 +159,10 @@ public class MenuUsuario {
                     case "0":
                         return;
                     default:
-                        if (valorInserido.matches("\\\\b(10|[1-9])\\\\b")) {
+                        if (valorInserido.matches("[0-9]+")) {
                             opcaoSelecionada = menu.validarEntradaInteira(valorInserido);
-                            if (opcaoSelecionada < posts.size()) {
-                                postSelecionado = posts.get(opcaoSelecionada);
+                            if (opcaoSelecionada <= 10 && opcaoSelecionada > 0) {
+                                postSelecionado = posts.get(opcaoSelecionada - 1 + (pagina * 10));
                             }
 
                             postEstaSelecionado = postSelecionado != null;
@@ -173,8 +174,9 @@ public class MenuUsuario {
                             while (postEstaSelecionado) {
                                 System.out.println(postSelecionado);
                                 System.out.println("1- Mostrar curtidas");
-                                System.out.println("2- Deletar");
-                                System.out.println("3- Voltar");
+                                System.out.println("2- Mostrar comentários");
+                                System.out.println("3- Deletar");
+                                System.out.println("4- Voltar");
 
                                 opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
                                 if (opcaoSelecionada != null) {
@@ -183,9 +185,11 @@ public class MenuUsuario {
                                             mostrarCurtidas(postSelecionado);
                                             break;
                                         case 2:
+
+                                        case 3:
                                             deletarPost(postSelecionado);
                                             break;
-                                        case 3:
+                                        case 4:
                                             postEstaSelecionado = false;
                                             break;
                                     }
@@ -224,6 +228,20 @@ public class MenuUsuario {
         System.out.println(ConsoleColors.BLUE_BACKGROUND + "==== Curtidas ====" + ConsoleColors.BLUE_UNDERLINED);
         for (Usuario u : curtidas) {
             System.out.println(u.getNome());
+        }
+        System.out.println(ConsoleColors.RESET);
+    }
+
+    private void mostrarComentarios(Post post) {
+        List<Comentario> comentarios = post.getComentarios();
+
+        if (comentarios.isEmpty()) {
+            System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Este post não possui comentários." + ConsoleColors.RESET);
+            return;
+        }
+        System.out.println(ConsoleColors.BLUE_BACKGROUND + "==== Comentários ====" + ConsoleColors.RESET);
+        for (Comentario c : comentarios) {
+            System.out.println(c);
         }
         System.out.println(ConsoleColors.RESET);
     }
