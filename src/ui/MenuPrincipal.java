@@ -179,7 +179,7 @@ public class MenuPrincipal {
         menu.exibirMenu();
     }
 
-    private Integer validarEntradaInteira(String value) {
+    public Integer validarEntradaInteira(String value) {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
