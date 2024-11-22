@@ -1,5 +1,7 @@
 package modelo;
 
+import ui.ConsoleColors;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,12 +56,10 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post:\n\n" +
-                "ID: " + id +
-                "\nAutor: " + autor.getNome() +
-                "\nConteudo: '" + conteudo + '\'' +
-                "\nData de publicação: " + dataPublicacao +
-                "\nCurtidas: " + curtidas.size() + "\n";
+        return ConsoleColors.BLUE_BOLD_BRIGHT + autor.getNome() + ConsoleColors.RESET +
+                ConsoleColors.WHITE_UNDERLINED + dataPublicacao + ConsoleColors.RESET + "\n\n" +
+                ConsoleColors.WHITE_BOLD_BRIGHT + conteudo +
+                "\n👍 " + curtidas.size() + "\n";
     }
 
     public void adicionarCurtida(Usuario usuario) {
