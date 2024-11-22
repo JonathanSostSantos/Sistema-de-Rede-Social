@@ -54,6 +54,14 @@ public class Post {
         this.dataPublicacao = dataPublicacao;
     }
 
+    public List<Usuario> getCurtidas() {
+        return curtidas;
+    }
+
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
     @Override
     public String toString() {
         return ConsoleColors.BLUE_BOLD_BRIGHT + autor.getNome() + ConsoleColors.RESET +
