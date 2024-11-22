@@ -12,8 +12,7 @@ public class Post {
     private List<Usuario> curtidas;
     private List<Comentario> comentarios;
 
-    public Post(Integer id, Usuario autor, String conteudo, LocalDateTime dataPublicacao) {
-        this.id = id;
+    public Post(Usuario autor, String conteudo, LocalDateTime dataPublicacao) {
         this.autor = autor;
         this.conteudo = conteudo;
         this.dataPublicacao = dataPublicacao;
