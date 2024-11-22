@@ -1,6 +1,7 @@
 package ui;
 
 import gerenciador.GerenciadorPosts;
+import gerenciador.GerenciadorUsuarios;
 import modelo.Comentario;
 import modelo.Post;
 import modelo.Usuario;
@@ -13,6 +14,7 @@ public class MenuUsuario {
     private MenuPrincipal menu;
     private Scanner leitor;
     private Usuario usuarioLogado;
+    private GerenciadorUsuarios gerenciador;
 
     public void setUsuarioLogado(Usuario usuarioLogado) {
         this.usuarioLogado = usuarioLogado;
@@ -21,6 +23,7 @@ public class MenuUsuario {
     public MenuUsuario() {
         this.leitor = new Scanner(System.in);
         menu = new MenuPrincipal();
+        gerenciador = new GerenciadorUsuarios();
     }
 
     public void exibirMenu() {
@@ -173,10 +176,10 @@ public class MenuUsuario {
 
                             while (postEstaSelecionado) {
                                 System.out.println(postSelecionado);
-                                System.out.println("1- Mostrar curtidas");
+                                System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Mostrar curtidas");
                                 System.out.println("2- Mostrar comentários");
                                 System.out.println("3- Deletar");
-                                System.out.println("4- Voltar");
+                                System.out.println("4- Voltar" + ConsoleColors.RESET);
 
                                 opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
                                 if (opcaoSelecionada != null) {
@@ -185,7 +188,8 @@ public class MenuUsuario {
                                             mostrarCurtidas(postSelecionado);
                                             break;
                                         case 2:
-
+                                            mostrarComentarios(postSelecionado);
+                                            break;
                                         case 3:
                                             deletarPost(postSelecionado);
                                             break;
@@ -207,7 +211,61 @@ public class MenuUsuario {
     }
 
     private void buscarUsuarios() {
+        String valorInserido;
+        Integer opcaoSelecionada;
+        List<Usuario> usuarios;
+        Usuario usuarioSelecionado;
+        Boolean ehAmigo;
 
+        while (true) {
+            System.out.println("Digite o nome do usuário a ser buscado:");
+            valorInserido = leitor.nextLine();
+
+            usuarios = gerenciador.buscarPorNome(valorInserido);
+
+            if (usuarios.isEmpty()) {
+                System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Não foram encontrados resultados com esta pesquisa." + ConsoleColors.RESET);
+                return;
+            }
+
+            for (int i = 0; i < usuarios.size(); i++) {
+                System.out.println(ConsoleColors.WHITE_BOLD + (i+1) + ConsoleColors.RESET + "- " + usuarios.get(i));
+            }
+            System.out.println(ConsoleColors.WHITE_UNDERLINED + "(Digite 0 para retornar)" + ConsoleColors.RESET);
+
+            opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
+
+            if (opcaoSelecionada != null) {
+                switch (opcaoSelecionada) {
+                    case 0:
+                        return;
+                    default:
+                        if (opcaoSelecionada < usuarios.size() - 1) {
+                            usuarioSelecionado = usuarios.get(opcaoSelecionada);
+                            ehAmigo = ehAmigo(usuarioLogado, usuarioSelecionado);
+                            System.out.println(usuarioSelecionado);
+                            System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- " + (ehAmigo ? "Remover" : "Adicionar") + " amigo");
+                            System.out.println("2- Voltar" + ConsoleColors.RESET);
+                            opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
+
+                            switch (opcaoSelecionada) {
+                                case 1:
+                                    if (ehAmigo) {
+                                        usuarioLogado.removerAmigo(usuarioSelecionado);
+                                        usuarioSelecionado.removerAmigo(usuarioLogado);
+                                    } else {
+                                        usuarioLogado.adicionarAmigo(usuarioSelecionado);
+                                        usuarioSelecionado.adicionarAmigo(usuarioLogado);
+                                    }
+                                    break;
+                                case 2:
+                                    break;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
     }
 
     private void gerenciarAmizades() {
@@ -248,5 +306,13 @@ public class MenuUsuario {
 
     private void deletarPost(Post post) {
         usuarioLogado.getPosts().remove(post);
+    }
+
+    private boolean ehAmigo(Usuario usuario1, Usuario usuario2) {
+        for (Usuario u : usuario1.getAmigos()) {
+            if (u == usuario2) return true;
+        }
+
+        return false;
     }
 }
