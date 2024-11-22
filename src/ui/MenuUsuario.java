@@ -5,6 +5,7 @@ import modelo.Post;
 import modelo.Usuario;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuUsuario {
@@ -118,9 +119,13 @@ public class MenuUsuario {
 
     private void verPosts() {
         Integer pagina = 0;
-        Integer totalPosts = usuarioLogado.getPosts().size();
+        List<Post> posts = usuarioLogado.getPosts();
+        Integer totalPosts = posts.size();
         Integer totalPaginas;
         String valorInserido;
+        Integer opcaoSelecionada;
+        Post postSelecionado = null;
+        Boolean postEstaSelecionado;
 
         if (totalPosts <= 0) {
             System.out.println("Você não possui nenhum post, que tal fazer seu primeiro?");
@@ -130,11 +135,12 @@ public class MenuUsuario {
 
             while (true) {
                 for (int i = pagina * 10; i < (pagina * 10) + 10; i++) {
-                    System.out.println(usuarioLogado.getPosts().get(i));
+                    System.out.println(posts.get(i));
                 }
                 System.out.println("\n" + (pagina > 0 ? pagina > 1 ? "<< <" : "<" : "") + " Página " + (pagina + 1) + " de " + (totalPaginas + 1) + (pagina < totalPaginas ? pagina < totalPaginas - 1 ? " >> >" : " >" : ""));
+                System.out.println(ConsoleColors.WHITE_UNDERLINED + "(Digite 0 para retornar)" + ConsoleColors.RESET);
                 valorInserido = leitor.nextLine();
-                switch (valorInserido) {
+                switch (valorInserido.trim()) {
                     case "<<":
                         if (pagina > 1) pagina = 0;
                         break;
@@ -147,9 +153,42 @@ public class MenuUsuario {
                     case ">>":
                         if (pagina < (totalPaginas - 1)) pagina = totalPaginas;
                         break;
+                    case "0":
+                        return;
                     default:
-                        if (valorInserido.matches(".*[0-9].*")) {
+                        if (valorInserido.matches("\\\\b(10|[1-9])\\\\b")) {
+                            opcaoSelecionada = menu.validarEntradaInteira(valorInserido);
+                            if (opcaoSelecionada < posts.size()) {
+                                postSelecionado = posts.get(opcaoSelecionada);
+                            }
 
+                            postEstaSelecionado = postSelecionado != null;
+
+                            if (!postEstaSelecionado) {
+                                System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "O post selecionado é inválido!" + ConsoleColors.RESET);
+                            }
+
+                            while (postEstaSelecionado) {
+                                System.out.println(postSelecionado);
+                                System.out.println("1- Mostrar curtidas");
+                                System.out.println("2- Deletar");
+                                System.out.println("3- Voltar");
+
+                                opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
+                                if (opcaoSelecionada != null) {
+                                    switch (opcaoSelecionada) {
+                                        case 1:
+                                            mostrarCurtidas(postSelecionado);
+                                            break;
+                                        case 2:
+                                            deletarPost(postSelecionado);
+                                            break;
+                                        case 3:
+                                            postEstaSelecionado = false;
+                                            break;
+                                    }
+                                }
+                            }
                         }
                         break;
                 }
@@ -171,5 +210,23 @@ public class MenuUsuario {
 
     private void verFeedNoticias() {
 
+    }
+
+    private void mostrarCurtidas(Post post) {
+        List<Usuario> curtidas = post.getCurtidas();
+
+        if (curtidas.isEmpty()) {
+            System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Este post não possui curtidas." + ConsoleColors.RESET);
+            return;
+        }
+        System.out.println(ConsoleColors.BLUE_BACKGROUND + "==== Curtidas ====" + ConsoleColors.BLUE_UNDERLINED);
+        for (Usuario u : curtidas) {
+            System.out.println(u.getNome());
+        }
+        System.out.println(ConsoleColors.RESET);
+    }
+
+    private void deletarPost(Post post) {
+        usuarioLogado.getPosts().remove(post);
     }
 }
