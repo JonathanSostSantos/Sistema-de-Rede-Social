@@ -325,17 +325,18 @@ public class MenuUsuario {
     private void verFeedNoticias() {
         List<Post> postsDoFeed = new ArrayList<>(usuarioLogado.getPosts());
         Post postSelecionado;
-        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "==== Feed de notícias ====" + ConsoleColors.RESET);
-        for (Usuario u : usuarioLogado.getAmigos()) {
-            Collections.copy(postsDoFeed, u.getPosts());
-        }
 
         while (true) {
+            System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "==== Feed de notícias ====" + ConsoleColors.RESET);
+            for (Usuario u : usuarioLogado.getAmigos()) {
+                Collections.copy(postsDoFeed, u.getPosts());
+            }
             if (postsDoFeed.isEmpty()) {
                 System.out.println("Ops, não tem nada para ver aqui 😕");
             } else {
                 postSelecionado = gerenciadorPosts.buscarPorId(listarPostsPaginados(gerenciadorPosts.ordenarPorData(usuarioLogado.getPosts())));
                 interagirComPost(postSelecionado);
+                break;
             }
         }
     }
@@ -380,6 +381,7 @@ public class MenuUsuario {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "O comentário pode conter até 255 caracteres. No momento ele contém: " + valorInserido.length() + ConsoleColors.RESET);
             } else {
                 gerenciadorPosts.comentar(post.getId(), new Comentario(usuarioLogado, valorInserido, post));
+                break;
             }
         }
     }
