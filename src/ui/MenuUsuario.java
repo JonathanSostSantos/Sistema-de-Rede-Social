@@ -7,6 +7,8 @@ import modelo.Post;
 import modelo.Usuario;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -212,34 +214,12 @@ public class MenuUsuario {
 
         while (true) {
             System.out.println("Seus posts:");
-            postSelecionado = gerenciadorPosts.buscarPorId(listarPostsPaginados(gerenciadorPosts.ordernarPorData(usuarioLogado.getPosts())));
+            postSelecionado = gerenciadorPosts.buscarPorId(listarPostsPaginados(gerenciadorPosts.ordenarPorData(usuarioLogado.getPosts())));
 
             postEstaSelecionado = postSelecionado != null;
 
-            while (postEstaSelecionado) {
-                System.out.println(postSelecionado);
-                System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Mostrar curtidas");
-                System.out.println("2- Mostrar comentários");
-                System.out.println("3- Deletar");
-                System.out.println("4- Voltar" + ConsoleColors.RESET);
-
-                opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
-                if (opcaoSelecionada != null) {
-                    switch (opcaoSelecionada) {
-                        case 1:
-                            mostrarCurtidas(postSelecionado);
-                            break;
-                        case 2:
-                            mostrarComentarios(postSelecionado);
-                            break;
-                        case 3:
-                            deletarPost(postSelecionado);
-                            break;
-                        case 4:
-                            postEstaSelecionado = false;
-                            break;
-                    }
-                }
+            if (postEstaSelecionado) {
+                interagirComPost(postSelecionado);
             }
         }
     }
@@ -290,11 +270,9 @@ public class MenuUsuario {
                             switch (opcaoSelecionada) {
                                 case 1:
                                     if (ehAmigo) {
-                                        usuarioLogado.removerAmigo(usuarioSelecionado);
-                                        usuarioSelecionado.removerAmigo(usuarioLogado);
+                                        gerenciadorUsuarios.removerAmizade(usuarioLogado.getId(), usuarioSelecionado.getId());
                                     } else {
-                                        usuarioLogado.adicionarAmigo(usuarioSelecionado);
-                                        usuarioSelecionado.adicionarAmigo(usuarioLogado);
+                                        gerenciadorUsuarios.adicionarAmizade(usuarioLogado.getId(), usuarioSelecionado.getId());
                                     }
                                     break;
                                 case 2:
@@ -346,7 +324,21 @@ public class MenuUsuario {
     }
 
     private void verFeedNoticias() {
+        List<Post> postsDoFeed = new ArrayList<>(usuarioLogado.getPosts());
+        Post postSelecionado;
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "==== Feed de notícias ====" + ConsoleColors.RESET);
+        for (Usuario u : usuarioLogado.getAmigos()) {
+            Collections.copy(postsDoFeed, u.getPosts());
+        }
 
+        while (true) {
+            if (postsDoFeed.isEmpty()) {
+                System.out.println("Ops, não tem nada para ver aqui 😕");
+            } else {
+                postSelecionado = gerenciadorPosts.buscarPorId(listarPostsPaginados(gerenciadorPosts.ordenarPorData(usuarioLogado.getPosts())));
+                interagirComPost(postSelecionado);
+            }
+        }
     }
 
     private void mostrarCurtidas(Post post) {
@@ -375,6 +367,63 @@ public class MenuUsuario {
             System.out.println(c);
         }
         System.out.println(ConsoleColors.RESET);
+    }
+
+    private void comentar(Post post) {
+        String valorInserido;
+        while (true) {
+            System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "Digite seu comentário:" + ConsoleColors.RESET);
+            valorInserido = leitor.nextLine();
+
+            if (valorInserido.isEmpty()) {
+                System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "O comentário não pode ser vazio." + ConsoleColors.RESET);
+            } else if (valorInserido.length() > 255) {
+                System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "O comentário pode conter até 255 caracteres. No momento ele contém: " + valorInserido.length() + ConsoleColors.RESET);
+            } else {
+                gerenciadorPosts.comentar(post.getId(), new Comentario(usuarioLogado, valorInserido, post));
+            }
+        }
+    }
+
+    private void interagirComPost(Post post) {
+        Integer opcaoSelecionada;
+
+        System.out.println(post);
+        System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Mostrar curtidas");
+        System.out.println("2- Mostrar comentários");
+        System.out.println("3-" + (post.jaCurtiu(usuarioLogado) ? "Desc" : "C") + "urtir");
+        System.out.println("4- Comentar");
+        System.out.println("5- Deletar");
+        System.out.println("6- Voltar" + ConsoleColors.RESET);
+
+        while (true) {
+            opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
+            if (opcaoSelecionada != null) {
+                switch (opcaoSelecionada) {
+                    case 1:
+                        mostrarCurtidas(post);
+                        break;
+                    case 2:
+                        mostrarComentarios(post);
+                        break;
+                    case 3:
+                        if (post.jaCurtiu(usuarioLogado)) {
+                            gerenciadorPosts.descurtir(post.getId(), usuarioLogado.getId());
+                        } else {
+                            gerenciadorPosts.curtir(post.getId(), usuarioLogado.getId());
+                        }
+                        break;
+                    case 4:
+                        comentar(post);
+                        break;
+                    case 5:
+                        deletarPost(post);
+                        break;
+                    case 6:
+                        return;
+                }
+            }
+        }
     }
 
     private void deletarPost(Post post) {

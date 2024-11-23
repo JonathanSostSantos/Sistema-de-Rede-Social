@@ -115,6 +115,7 @@ public class GerenciadorUsuarios {
         }
 
         usuario1.adicionarAmigo(usuario2);
+        usuario2.adicionarAmigo(usuario1);
     }
 
     public void removerAmizade(int idUsuario1, int idUsuario2) {
@@ -133,6 +134,7 @@ public class GerenciadorUsuarios {
         }
 
         usuario1.removerAmigo(usuario2);
+        usuario2.removerAmigo(usuario1);
     }
 
     private void validarUsuario(Usuario usuario) {
