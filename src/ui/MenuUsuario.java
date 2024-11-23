@@ -210,7 +210,6 @@ public class MenuUsuario {
     private void verPosts() {
         Boolean postEstaSelecionado;
         Post postSelecionado;
-        Integer opcaoSelecionada;
 
         while (true) {
             System.out.println("Seus posts:");
@@ -220,6 +219,7 @@ public class MenuUsuario {
 
             if (postEstaSelecionado) {
                 interagirComPost(postSelecionado);
+                break;
             }
         }
     }
