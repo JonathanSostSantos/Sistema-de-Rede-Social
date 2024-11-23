@@ -312,8 +312,7 @@ public class MenuUsuario {
 
                 switch (opcaoSelecionada) {
                     case 1:
-                        usuarioLogado.removerAmigo(amigo);
-                        amigo.removerAmigo(usuarioLogado);
+                        gerenciadorUsuarios.removerAmizade(usuarioLogado.getId(), amigo.getId());
                         System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Amigo removido com sucesso!" + ConsoleColors.RESET);
                         break;
                     case 2:
