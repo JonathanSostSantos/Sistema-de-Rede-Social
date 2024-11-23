@@ -17,14 +17,22 @@ public class Usuario {
     private List<Usuario> amigos;
     private List<Post> posts;
 
-    public Usuario(String nome, String username, String email, String senha, LocalDateTime dataCadastro) {
+    public Usuario(String nome, String username, String email, String senha) {
         this.nome = nome;
         this.username = username;
         this.email = email;
         this.senha = senha;
-        this.dataCadastro = dataCadastro;
+        this.dataCadastro = LocalDateTime.now();
         this.amigos = new ArrayList<>();
         this.posts = new ArrayList<>();
+    }
+
+    public Usuario(Integer id, String nome, String username, String email, String senha) {
+        this.id = id;
+        this.nome = nome;
+        this.username = username;
+        this.email = email;
+        this.senha = senha;
     }
 
     public Integer getId() {

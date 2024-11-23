@@ -9,6 +9,7 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -19,6 +20,7 @@ public class MenuPrincipal {
     private GerenciadorPosts gerenciadorPosts;
     private static final String algoritmo = "AES";
     private SecretKey chave;
+    private MenuUsuario menu;
 
     public MenuPrincipal() {
         this.leitor = new Scanner(System.in);
@@ -28,18 +30,22 @@ public class MenuPrincipal {
 
     public void exibirMenu() {
         Integer opcaoSelecionada;
-        Usuario usuario1 = null;
-        Usuario usuario2 = null;
+        Usuario usuario1;
+        Usuario usuario2;
+        menu = new MenuUsuario();
+        menu.setGerenciadorPosts(gerenciadorPosts);
+        menu.setGerenciadorUsuarios(gerenciadorUsuarios);
         try {
             chave = gerarChave();
+            menu.setChave(chave);
         } catch (Exception e) {
             System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Ocorreu um erro inesperado ao gerar a chave de encriptação.\nMensagem de erro: " + e.getMessage() + ConsoleColors.RESET);
         }
 
         try {
-            usuario1 = new Usuario("teste da silva", "teste", "teste@gmail.com", encriptarSenha("Teste1200", chave), LocalDateTime.now());
+            usuario1 = new Usuario("teste da silva", "teste", "teste@gmail.com", encriptarSenha("Teste1200", chave));
             gerenciadorUsuarios.cadastrar(usuario1);
-            usuario2 = new Usuario("abcd", "abcd", "abcd@gmail.com", encriptarSenha("Abcd1234", chave), LocalDateTime.now());
+            usuario2 = new Usuario("abcd", "abcd", "abcd@gmail.com", encriptarSenha("Abcd1234", chave));
             gerenciadorUsuarios.cadastrar(usuario2);
 
             gerenciadorPosts.criar(new Post(usuario1, "Se rir fosse exercício, já estaríamos todos marombeiros por aqui! #Funwitter", LocalDateTime.now()));
@@ -130,14 +136,14 @@ public class MenuPrincipal {
     }
 
     private void cadastrarUsuario() {
-        Usuario usuario = validarUsuario();
+        Usuario usuario = validarUsuario(1);
         if (usuario != null) {
             gerenciadorUsuarios.cadastrar(usuario);
             System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Usuário cadastrado com sucesso!" + ConsoleColors.RESET);
         }
     }
 
-    public Usuario validarUsuario() {
+    public Usuario validarUsuario(int operacao, Usuario usuarioSendoAlterado, SecretKey chave) {
         String valorInserido;
         String nome;
         String username;
@@ -145,14 +151,18 @@ public class MenuPrincipal {
         String senha;
         Boolean nomeValido;
         Boolean senhaValida;
-        Usuario usuario = null;
+        Usuario usuario;
 
-        System.out.println(ConsoleColors.BLUE_BACKGROUND + "==== Criação de Usuário ====" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BACKGROUND + ConsoleColors.BLACK_BOLD_BRIGHT + "==== " + (operacao == 1 ? "Criação" : "Alteração") + " de Usuário ====" + ConsoleColors.RESET);
 
         while (true) {
+            if (operacao == 2) {
+                System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "Nome atual: " + ConsoleColors.RESET + ConsoleColors.BLUE_BOLD_BRIGHT + usuarioSendoAlterado.getNome());
+            }
             System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "\nNome completo: " + ConsoleColors.RESET);
             valorInserido = leitor.nextLine().trim();
-            if (valorInserido.length() < 2) {
+
+            if ((valorInserido.length() < 2 && operacao == 1) || (valorInserido.length() == 1 && operacao == 2)) {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "O nome de usuário deve conter 2 ou mais caracteres." + ConsoleColors.RESET);
             } else {
                 nomeValido = true;
@@ -172,11 +182,16 @@ public class MenuPrincipal {
         }
 
         while (true) {
+            if (operacao == 2) {
+                System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "Username atual: " + ConsoleColors.RESET + ConsoleColors.BLUE_BOLD_BRIGHT + usuarioSendoAlterado.getUsername());
+            }
             System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "\nUsername: " + ConsoleColors.RESET);
             valorInserido = leitor.nextLine().trim();
 
             if (gerenciadorUsuarios.buscarPorUsername(valorInserido) != null) {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Username já em uso." + ConsoleColors.RESET);
+            } else if (valorInserido.isBlank() && operacao == 1) {
+                System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Username não pode ser vazio." + ConsoleColors.RESET);
             } else {
                 username = valorInserido;
                 break;
@@ -184,10 +199,16 @@ public class MenuPrincipal {
         }
 
         while (true) {
+            if (operacao == 2) {
+                System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "Email atual: " + ConsoleColors.RESET + ConsoleColors.BLUE_BOLD_BRIGHT + usuarioSendoAlterado.getEmail());
+            }
             System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "\nEmail: " + ConsoleColors.RESET);
             valorInserido = leitor.nextLine().trim();
 
-            if (!validarEmail(valorInserido)) {
+            if (operacao == 2 && valorInserido.isBlank()) {
+                email = valorInserido;
+                break;
+            } else if (!validarEmail(valorInserido)) {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Este email é inválido!" + ConsoleColors.RESET);
             } else if (gerenciadorUsuarios.buscarPorEmail(valorInserido) != null) {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Este email já está em uso." + ConsoleColors.RESET);
@@ -198,34 +219,49 @@ public class MenuPrincipal {
         }
 
         while (true) {
+            if (operacao == 2) {
+                System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "Senha atual: " + ConsoleColors.RESET + ConsoleColors.BLUE_BOLD_BRIGHT + censurarSenha(usuarioSendoAlterado.getSenha(), chave) + ConsoleColors.RESET);
+            }
             System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "\nSenha: " + ConsoleColors.RESET);
             valorInserido = leitor.nextLine().trim();
 
-            senhaValida = valorInserido.length() >= 6 && valorInserido.matches(".*[0-9].*") && senhaContemMaiuscula(valorInserido) && senhaContemMinuscula(valorInserido);
+            if (operacao == 2 && valorInserido.isBlank()) {
+                senha = valorInserido;
+                break;
+            } else {
+                senhaValida = valorInserido.length() >= 6 && valorInserido.matches(".*[0-9].*") && senhaContemMaiuscula(valorInserido) && senhaContemMinuscula(valorInserido);
 
-            if (senhaValida) {
-                try {
-                    senha = encriptarSenha(valorInserido, chave);
-                    break;
-                } catch (Exception e) {
-                    System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Ocorreu um erro ao criar a senha. Tente novamente.\nMensagem de erro: " + e.getMessage() + ConsoleColors.RESET);
+                if (senhaValida) {
+                    try {
+                        senha = encriptarSenha(valorInserido, chave);
+                        break;
+                    } catch (Exception e) {
+                        System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Ocorreu um erro ao criar a senha. Tente novamente.\nMensagem de erro: " + e.getMessage() + ConsoleColors.RESET);
+                    }
                 }
-            }
 
-            System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Senha inválida! Motivos:" +
-                    (valorInserido.length() < 6 ? "\n  • A senha possui menos que 6 caracteres." : "") +
-                    (!valorInserido.matches(".*[0-9].*") ? "\n  • A senha não possui números." : "") +
-                    (!senhaContemMaiuscula(valorInserido) ? "\n  • A senha não possui pelo menos 1 letra maiúscula." : "") +
-                    (!senhaContemMinuscula(valorInserido) ? "\n  • A senha não possui pelo menos 1 letra minúscula." : "") + ConsoleColors.RESET);
+                System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Senha inválida! Motivos:" +
+                        (valorInserido.length() < 6 ? "\n  • A senha possui menos que 6 caracteres." : "") +
+                        (!valorInserido.matches(".*[0-9].*") ? "\n  • A senha não possui números." : "") +
+                        (!senhaContemMaiuscula(valorInserido) ? "\n  • A senha não possui pelo menos 1 letra maiúscula." : "") +
+                        (!senhaContemMinuscula(valorInserido) ? "\n  • A senha não possui pelo menos 1 letra minúscula." : "") + ConsoleColors.RESET);
+            }
         }
 
-        usuario = new Usuario(nome, username, email, senha, LocalDateTime.now());
+        if (operacao == 1) {
+            usuario = new Usuario(nome, username, email, senha);
+        } else {
+            usuario = new Usuario(usuarioSendoAlterado.getId(), nome, username, email, senha);
+        }
 
         return usuario;
     }
 
+    public Usuario validarUsuario(int operacao) {
+        return validarUsuario(operacao, null, null);
+    }
+
     private void exibirMenuLogado(Usuario usuario) {
-        MenuUsuario menu = new MenuUsuario();
         menu.setUsuarioLogado(usuario);
         menu.exibirMenu();
     }
@@ -289,5 +325,19 @@ public class MenuPrincipal {
         cipher.init(Cipher.DECRYPT_MODE, chave);
         byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(senhaEncriptada));
         return new String(decryptedBytes);
+    }
+
+    private String censurarSenha(String senha, SecretKey chave) {
+        char[] caracteres;
+        try {
+            caracteres = new char[decriptarSenha(senha, chave).length()];
+            Arrays.fill(caracteres, '*');
+
+            return new String(caracteres);
+        } catch (Exception e) {
+            System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Ocorreu um erro ao trazer a senha.\nMensagem de erro: " + e.getMessage() + ConsoleColors.RESET);
+        }
+
+        return null;
     }
 }

@@ -6,6 +6,7 @@ import modelo.Comentario;
 import modelo.Post;
 import modelo.Usuario;
 
+import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,9 +19,14 @@ public class MenuUsuario {
     private Usuario usuarioLogado;
     private GerenciadorUsuarios gerenciadorUsuarios;
     private GerenciadorPosts gerenciadorPosts;
+    private SecretKey chave;
 
     public void setUsuarioLogado(Usuario usuarioLogado) {
         this.usuarioLogado = usuarioLogado;
+    }
+
+    public void setChave(SecretKey chave) {
+        this.chave = chave;
     }
 
     public MenuUsuario() {
@@ -28,6 +34,14 @@ public class MenuUsuario {
         menu = new MenuPrincipal();
         gerenciadorUsuarios = new GerenciadorUsuarios();
         gerenciadorPosts = new GerenciadorPosts();
+    }
+
+    public void setGerenciadorUsuarios(GerenciadorUsuarios gerenciadorUsuarios) {
+        this.gerenciadorUsuarios = gerenciadorUsuarios;
+    }
+
+    public void setGerenciadorPosts(GerenciadorPosts gerenciadorPosts) {
+        this.gerenciadorPosts = gerenciadorPosts;
     }
 
     public void exibirMenu() {
@@ -186,7 +200,6 @@ public class MenuUsuario {
     }
 
     private void verPosts() {
-        Boolean postEstaSelecionado;
         Post postSelecionado;
 
         while (true) {
@@ -202,11 +215,10 @@ public class MenuUsuario {
 
 
     private void editarPerfil() {
-        Usuario usuario;
-        usuario = menu.validarUsuario();
+        usuarioLogado = menu.validarUsuario(2, usuarioLogado, chave);
 
-        if (usuario != null) {
-            gerenciadorUsuarios.atualizar(usuario);
+        if (usuarioLogado != null) {
+            gerenciadorUsuarios.atualizar(usuarioLogado);
         }
     }
 
