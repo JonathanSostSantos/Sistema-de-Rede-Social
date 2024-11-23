@@ -426,7 +426,7 @@ public class MenuUsuario {
     }
 
     private void deletarPost(Post post) {
-        usuarioLogado.getPosts().remove(post);
+        gerenciadorPosts.deletar(post.getId());
     }
 
     private boolean ehAmigo(Usuario usuario1, Usuario usuario2) {
