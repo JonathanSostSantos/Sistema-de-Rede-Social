@@ -226,7 +226,12 @@ public class MenuUsuario {
 
 
     private void editarPerfil() {
+        Usuario usuario;
+        usuario = menu.validarUsuario();
 
+        if (usuario != null) {
+            gerenciadorUsuarios.atualizar(usuario);
+        }
     }
 
     private void buscarUsuarios() {
