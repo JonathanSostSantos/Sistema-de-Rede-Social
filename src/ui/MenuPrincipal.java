@@ -77,6 +77,8 @@ public class MenuPrincipal {
             gerenciadorPosts.criar(new Post(usuario2, "Adoro como os pássaros cantam de manhã, mas eles poderiam baixar o volume, né? Ainda tô no modo soneca. \uD83D\uDC26\uD83D\uDE34", LocalDateTime.now().withHour(23)));
             gerenciadorPosts.criar(new Post(usuario2, "A vida é como o Wi-Fi público: você nunca sabe se vai conectar ou travar de vez. \uD83D\uDCF6\uD83D\uDE02 #FilosofiaDoDia", LocalDateTime.now().withHour(1)));
             gerenciadorPosts.criar(new Post(usuario2, "Sou especialista em prometer acordar cedo e fazer cara de surpresa quando o despertador toca. ⏰\uD83E\uDD2F #Clássico", LocalDateTime.now().withHour(2)));
+
+            gerenciadorUsuarios.adicionarAmizade(usuario1.getId(), usuario2.getId());
         } catch (Exception e) {
             System.out.println("Ocorreu um erro ao gerar os testes unitários.\nMensagem de erro: " + e.getMessage());
         }
@@ -153,7 +155,7 @@ public class MenuPrincipal {
         Boolean senhaValida;
         Usuario usuario;
 
-        System.out.println(ConsoleColors.BLUE_BACKGROUND + ConsoleColors.BLACK_BOLD_BRIGHT + "==== " + (operacao == 1 ? "Criação" : "Alteração") + " de Usuário ====" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BACKGROUND + ConsoleColors.BLACK_BOLD + "==== " + (operacao == 1 ? "Criação" : "Alteração") + " de Usuário ====" + ConsoleColors.RESET);
 
         while (true) {
             if (operacao == 2) {

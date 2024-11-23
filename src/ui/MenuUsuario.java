@@ -289,7 +289,7 @@ public class MenuUsuario {
         }
 
         while (true) {
-            System.out.println(ConsoleColors.BLUE_BACKGROUND + "==== Lista de amigos ====" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.BLUE_BACKGROUND + ConsoleColors.BLACK_BOLD + "==== Lista de amigos ====" + ConsoleColors.RESET);
             for (int i = 0; i < amigos.size(); i++) {
                 System.out.println(ConsoleColors.WHITE_BOLD + (i + 1) + "- " + ConsoleColors.RESET + amigos.get(i));
             }
@@ -343,7 +343,7 @@ public class MenuUsuario {
             System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Este post não possui curtidas." + ConsoleColors.RESET);
             return;
         }
-        System.out.println(ConsoleColors.BLUE_BACKGROUND + "==== Curtidas ====" + ConsoleColors.BLUE_UNDERLINED);
+        System.out.println(ConsoleColors.BLUE_BACKGROUND + ConsoleColors.BLACK_BOLD + "==== Curtidas ====" + ConsoleColors.BLUE_UNDERLINED);
         for (Usuario u : curtidas) {
             System.out.println(u.getNome());
         }
@@ -357,7 +357,7 @@ public class MenuUsuario {
             System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Este post não possui comentários." + ConsoleColors.RESET);
             return;
         }
-        System.out.println(ConsoleColors.BLUE_BACKGROUND + "==== Comentários ====" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BACKGROUND + ConsoleColors.BLACK_BOLD + "==== Comentários ====" + ConsoleColors.RESET);
         for (Comentario c : comentarios) {
             System.out.println(c);
         }
