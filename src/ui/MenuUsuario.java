@@ -9,8 +9,6 @@ import modelo.Usuario;
 import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MenuUsuario {
     private MenuPrincipal menu;
@@ -26,6 +24,10 @@ public class MenuUsuario {
 
     public void setChave(SecretKey chave) {
         this.chave = chave;
+    }
+
+    public GerenciadorPosts getGerenciadorPosts() {
+        return gerenciadorPosts;
     }
 
     public MenuUsuario() {
@@ -351,9 +353,9 @@ public class MenuUsuario {
             System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Este post não possui curtidas." + ConsoleColors.RESET);
             return;
         }
-        System.out.println(ConsoleColors.BLUE_BACKGROUND + ConsoleColors.BLACK_BOLD + "==== Curtidas ====" + ConsoleColors.BLUE_UNDERLINED);
+        System.out.println(ConsoleColors.BLUE_BACKGROUND + ConsoleColors.BLACK_BOLD + "==== Curtidas ====" + ConsoleColors.RESET + "\n" + ConsoleColors.BLUE_UNDERLINED);
         for (Usuario u : curtidas) {
-            System.out.println(u.getNome());
+            System.out.println("👍 " + u.getNome());
         }
         System.out.println(ConsoleColors.RESET);
     }
@@ -365,7 +367,7 @@ public class MenuUsuario {
             System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Este post não possui comentários." + ConsoleColors.RESET);
             return;
         }
-        System.out.println(ConsoleColors.BLUE_BACKGROUND + ConsoleColors.BLACK_BOLD + "==== Comentários ====" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BACKGROUND + ConsoleColors.BLACK_BOLD + "==== Comentários ====" + ConsoleColors.RESET + "\n");
         for (Comentario c : comentarios) {
             System.out.println(c);
         }
@@ -392,15 +394,15 @@ public class MenuUsuario {
     private void interagirComPost(Post post) {
         Integer opcaoSelecionada;
 
-        System.out.println(post);
-        System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Mostrar curtidas");
-        System.out.println("2- Mostrar comentários");
-        System.out.println("3-" + (post.jaCurtiu(usuarioLogado) ? "Desc" : "C") + "urtir");
-        System.out.println("4- Comentar");
-        System.out.println("5- Deletar");
-        System.out.println("6- Voltar" + ConsoleColors.RESET);
-
         while (true) {
+            System.out.println(post);
+            System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Mostrar curtidas");
+            System.out.println("2- Mostrar comentários");
+            System.out.println("3-" + (post.jaCurtiu(usuarioLogado) ? " Desc" : " C") + "urtir");
+            System.out.println("4- Comentar");
+            System.out.println("5- Deletar");
+            System.out.println("6- Voltar" + ConsoleColors.RESET);
+
             opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
             if (opcaoSelecionada != null) {
                 switch (opcaoSelecionada) {

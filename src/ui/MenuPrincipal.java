@@ -35,6 +35,7 @@ public class MenuPrincipal {
         menu = new MenuUsuario();
         menu.setGerenciadorPosts(gerenciadorPosts);
         menu.setGerenciadorUsuarios(gerenciadorUsuarios);
+        menu.getGerenciadorPosts().setGerenciadorUsuarios(gerenciadorUsuarios);
         try {
             chave = gerarChave();
             menu.setChave(chave);

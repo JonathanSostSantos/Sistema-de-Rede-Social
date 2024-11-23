@@ -91,6 +91,7 @@ public class Post {
     public void removerCurtida(Usuario usuario) {
         for (Usuario curtidor : curtidas) {
             if (usuario == curtidor) {
+                curtidas.remove(curtidor);
                 System.out.println("Curtida removida com sucesso!");
                 return;
             }

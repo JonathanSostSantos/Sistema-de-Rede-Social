@@ -4,20 +4,22 @@ import modelo.Comentario;
 import modelo.Post;
 import modelo.Usuario;
 
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GerenciadorPosts {
     private List<Post> posts;
     private Integer proximoId;
+    private GerenciadorUsuarios gerenciadorUsuarios;
 
     public GerenciadorPosts() {
         this.posts = new ArrayList<>();
         this.proximoId = 1;
+    }
+
+    public void setGerenciadorUsuarios(GerenciadorUsuarios gerenciadorUsuarios) {
+        this.gerenciadorUsuarios = gerenciadorUsuarios;
     }
 
     public void criar(Post post) {
@@ -61,8 +63,7 @@ public class GerenciadorPosts {
     }
 
     public void curtir(int idPost, int idUsuario) {
-        GerenciadorUsuarios gerenciador = new GerenciadorUsuarios();
-        Usuario usuario = gerenciador.buscarPorId(idUsuario);
+        Usuario usuario = gerenciadorUsuarios.buscarPorId(idUsuario);
 
         for (Post p : posts) {
             if (p.getId() == idPost) {
@@ -72,8 +73,7 @@ public class GerenciadorPosts {
     }
 
     public void descurtir(int idPost, int idUsuario) {
-        GerenciadorUsuarios gerenciador = new GerenciadorUsuarios();
-        Usuario usuario = gerenciador.buscarPorId(idUsuario);
+        Usuario usuario = gerenciadorUsuarios.buscarPorId(idUsuario);
 
         for (Post p : posts) {
             if (p.getId() == idPost) {
