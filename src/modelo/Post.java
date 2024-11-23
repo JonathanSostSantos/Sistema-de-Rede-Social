@@ -102,4 +102,12 @@ public class Post {
     public void adicionarComentario(Comentario comentario) {
         this.comentarios.add(comentario);
     }
+
+    public boolean jaCurtiu(Usuario usuario) {
+        for (Usuario u : curtidas) {
+            if (u.equals(usuario)) return true;
+        }
+
+        return false;
+    }
 }
