@@ -294,22 +294,31 @@ public class MenuUsuario {
                 System.out.println(ConsoleColors.WHITE_BOLD + (i + 1) + "- " + ConsoleColors.RESET + amigos.get(i));
             }
 
+            if (amigos.isEmpty()) {
+                System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Você não possui amigos em sua lista de amizades." + ConsoleColors.RESET);
+            }
+
             System.out.println(ConsoleColors.WHITE_UNDERLINED + "(Selecione um amigo para interagir ou digite 0 para retornar)" + ConsoleColors.RESET);
             opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
 
-            if (opcaoSelecionada != null && opcaoSelecionada < amigos.size()) {
-                amigo = amigos.get(opcaoSelecionada);
-                System.out.println(amigo);
-                System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Remover amigo");
-                System.out.println("2- Voltar" + ConsoleColors.RESET);
+            if (opcaoSelecionada != null) {
+                if (opcaoSelecionada == 0) {
+                    return;
+                } else if (opcaoSelecionada <= amigos.size() && opcaoSelecionada > 0) {
+                    amigo = amigos.get(opcaoSelecionada-1);
+                    System.out.println(amigo);
+                    System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Remover amigo");
+                    System.out.println("2- Voltar" + ConsoleColors.RESET);
+                    opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
 
-                switch (opcaoSelecionada) {
-                    case 1:
-                        gerenciadorUsuarios.removerAmizade(usuarioLogado.getId(), amigo.getId());
-                        System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Amigo removido com sucesso!" + ConsoleColors.RESET);
-                        break;
-                    case 2:
-                        return;
+                    switch (opcaoSelecionada) {
+                        case 1:
+                            gerenciadorUsuarios.removerAmizade(usuarioLogado.getId(), amigo.getId());
+                            System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Amigo removido com sucesso!" + ConsoleColors.RESET);
+                            break;
+                        case 2:
+                            return;
+                    }
                 }
             }
         }
