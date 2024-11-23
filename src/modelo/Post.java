@@ -39,24 +39,12 @@ public class Post {
         return autor;
     }
 
-    public void setAutor(Usuario autor) {
-        this.autor = autor;
-    }
-
     public String getConteudo() {
         return conteudo;
     }
 
-    public void setConteudo(String conteudo) {
-        this.conteudo = conteudo;
-    }
-
     public LocalDateTime getDataPublicacao() {
         return dataPublicacao;
-    }
-
-    public void setDataPublicacao(LocalDateTime dataPublicacao) {
-        this.dataPublicacao = dataPublicacao;
     }
 
     public List<Usuario> getCurtidas() {

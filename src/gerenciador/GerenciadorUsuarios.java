@@ -53,8 +53,6 @@ public class GerenciadorUsuarios {
     }
 
     public Usuario buscarPorEmail(String email) {
-        List<Usuario> usuariosARetornar = new ArrayList<>();
-
         for(Usuario u : usuarios) {
             if (u.getNome().equalsIgnoreCase(email)) {
                 return u;
@@ -135,9 +133,5 @@ public class GerenciadorUsuarios {
 
         usuario1.removerAmigo(usuario2);
         usuario2.removerAmigo(usuario1);
-    }
-
-    private void validarUsuario(Usuario usuario) {
-        
     }
 }
