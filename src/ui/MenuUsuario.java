@@ -33,28 +33,6 @@ public class MenuUsuario {
     public void exibirMenu() {
         Integer opcaoSelecionada;
 
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Se rir fosse exercício, já estaríamos todos marombeiros por aqui! #Funwitter", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Alguém aí sabe como fazer café sem se apaixonar pelo cheiro? Perguntando para um amigo... ☕❤ #FunwitterMoment", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Dizem que rir é o melhor remédio. Bem, aqui somos uma farmácia completa!", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Se o tédio fosse esporte olímpico, já estaria com várias medalhas de ouro. #BoraRir", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Errado é quem não erra. A gente erra, mas com estilo! ✌", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Será que a pizza pensa em mim tanto quanto eu penso nela?", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Dormir cedo é overrated. Vamos rir até o sol nascer! #NoiteDivertida", LocalDateTime.now().withHour(2)));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Quem nunca colocou um lembrete e esqueceu do lembrete, não sabe o que é aventura. ⏰♂", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "A meta é ser tão engraçado quanto meu reflexo quando acordo.", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Se o mundo te der limões, faça memes. \uD83C\uDF4B\uD83D\uDE02 #MemeLife", LocalDateTime.now().withHour(6)));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Estudo revela: pessoas que seguem o Funwitter são 100% mais felizes. Ciência (talvez)!", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Hoje eu acordei com vontade de ser saudável... Aí lembrei que o chocolate também tem alma.", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Se escrever errado fosse arte, eu já seria um Picasso das palavras. #ArteDaGafe", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Qual é o plural de 'Internet caindo'? Apocalipse!", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Minha relação com a academia é como a do Wi-Fi: às vezes conecta, às vezes não.", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Acordar cedo é tipo spoiler do dia, não quero saber. #DorminhocosUnidos", LocalDateTime.now().withHour(4)));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Quem inventou o trabalho antes das 10 da manhã claramente não tomava café. ☕⏳", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "A vida é como um meme: às vezes você entende, às vezes só ri. #FunwitterFilosófico", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Sabe o que combina com sexta-feira? Tudo, menos trabalho. ✌ #VivaSexta", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Procurando motivo para sorrir? Olha para cima, tá escrito 'Funwitter'!", LocalDateTime.now()));
-        gerenciadorPosts.criar(new Post(usuarioLogado, "Hoje descobri que meu talento especial é lembrar de algo importante só depois que já é tarde demais. ⏳ #SuperPoderInútil", LocalDateTime.now()));
-
         System.out.println(ConsoleColors.CYAN_BOLD_BRIGHT + "Bem-vindo(a) de volta, " + ConsoleColors.GREEN_BOLD_BRIGHT + usuarioLogado.getNome() + ConsoleColors.CYAN_BOLD_BRIGHT + "!" + ConsoleColors.RESET);
         while (true) {
             System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "\n\nO que você deseja fazer?" + ConsoleColors.RESET);

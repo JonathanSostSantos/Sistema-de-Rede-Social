@@ -29,6 +29,7 @@ public class MenuPrincipal {
     public void exibirMenu() {
         Integer opcaoSelecionada;
         Usuario usuario1 = null;
+        Usuario usuario2 = null;
         try {
             chave = gerarChave();
         } catch (Exception e) {
@@ -38,6 +39,38 @@ public class MenuPrincipal {
         try {
             usuario1 = new Usuario("teste da silva", "teste", "teste@gmail.com", encriptarSenha("Teste1200", chave), LocalDateTime.now());
             gerenciadorUsuarios.cadastrar(usuario1);
+            usuario2 = new Usuario("abcd", "abcd", "abcd@gmail.com", encriptarSenha("Abcd1234", chave), LocalDateTime.now());
+            gerenciadorUsuarios.cadastrar(usuario2);
+
+            gerenciadorPosts.criar(new Post(usuario1, "Se rir fosse exercício, já estaríamos todos marombeiros por aqui! #Funwitter", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Alguém aí sabe como fazer café sem se apaixonar pelo cheiro? Perguntando para um amigo... ☕❤ #FunwitterMoment", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Dizem que rir é o melhor remédio. Bem, aqui somos uma farmácia completa!", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Se o tédio fosse esporte olímpico, já estaria com várias medalhas de ouro. #BoraRir", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Errado é quem não erra. A gente erra, mas com estilo! ✌", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Será que a pizza pensa em mim tanto quanto eu penso nela?", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Dormir cedo é overrated. Vamos rir até o sol nascer! #NoiteDivertida", LocalDateTime.now().withHour(2)));
+            gerenciadorPosts.criar(new Post(usuario1, "Quem nunca colocou um lembrete e esqueceu do lembrete, não sabe o que é aventura. ⏰♂", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "A meta é ser tão engraçado quanto meu reflexo quando acordo.", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Se o mundo te der limões, faça memes. \uD83C\uDF4B\uD83D\uDE02 #MemeLife", LocalDateTime.now().withHour(6)));
+            gerenciadorPosts.criar(new Post(usuario1, "Estudo revela: pessoas que seguem o Funwitter são 100% mais felizes. Ciência (talvez)!", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Hoje eu acordei com vontade de ser saudável... Aí lembrei que o chocolate também tem alma.", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Se escrever errado fosse arte, eu já seria um Picasso das palavras. #ArteDaGafe", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Qual é o plural de 'Internet caindo'? Apocalipse!", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Minha relação com a academia é como a do Wi-Fi: às vezes conecta, às vezes não.", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Acordar cedo é tipo spoiler do dia, não quero saber. #DorminhocosUnidos", LocalDateTime.now().withHour(4)));
+            gerenciadorPosts.criar(new Post(usuario1, "Quem inventou o trabalho antes das 10 da manhã claramente não tomava café. ☕⏳", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "A vida é como um meme: às vezes você entende, às vezes só ri. #FunwitterFilosófico", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Sabe o que combina com sexta-feira? Tudo, menos trabalho. ✌ #VivaSexta", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Procurando motivo para sorrir? Olha para cima, tá escrito 'Funwitter'!", LocalDateTime.now()));
+            gerenciadorPosts.criar(new Post(usuario1, "Hoje descobri que meu talento especial é lembrar de algo importante só depois que já é tarde demais. ⏳ #SuperPoderInútil", LocalDateTime.now()));
+
+            gerenciadorPosts.criar(new Post(usuario2, "Nunca subestime o poder de um meme para salvar um dia ruim. É basicamente terapia, só que grátis. \uD83D\uDE02\uD83D\uDCF1 #FunwitterSalva", LocalDateTime.now().withHour(3)));
+            gerenciadorPosts.criar(new Post(usuario2, "Alguém já tentou desligar e ligar de novo o ano? Acho que tá com bug. \uD83D\uDDA5\uFE0F\uD83E\uDD14 #Reset2024", LocalDateTime.now().withHour(5)));
+            gerenciadorPosts.criar(new Post(usuario2, "Segunda-feira é tipo o chefe chato das semanas, mas estamos aqui para rir na cara dela. \uD83D\uDE02\uD83D\uDCBC #Resistindo", LocalDateTime.now().withHour(18)));
+            gerenciadorPosts.criar(new Post(usuario2, "Se comer fosse esporte olímpico, eu seria ouro no revezamento pizza-batata frita-sorvete. \uD83E\uDD47\uD83C\uDF55\uD83C\uDF5F\uD83C\uDF66", LocalDateTime.now().withHour(7)));
+            gerenciadorPosts.criar(new Post(usuario2, "Adoro como os pássaros cantam de manhã, mas eles poderiam baixar o volume, né? Ainda tô no modo soneca. \uD83D\uDC26\uD83D\uDE34", LocalDateTime.now().withHour(23)));
+            gerenciadorPosts.criar(new Post(usuario2, "A vida é como o Wi-Fi público: você nunca sabe se vai conectar ou travar de vez. \uD83D\uDCF6\uD83D\uDE02 #FilosofiaDoDia", LocalDateTime.now().withHour(1)));
+            gerenciadorPosts.criar(new Post(usuario2, "Sou especialista em prometer acordar cedo e fazer cara de surpresa quando o despertador toca. ⏰\uD83E\uDD2F #Clássico", LocalDateTime.now().withHour(2)));
         } catch (Exception e) {
             System.out.println("Ocorreu um erro ao gerar os testes unitários.\nMensagem de erro: " + e.getMessage());
         }
@@ -186,11 +219,7 @@ public class MenuPrincipal {
                     (!senhaContemMinuscula(valorInserido) ? "\n  • A senha não possui pelo menos 1 letra minúscula." : "") + ConsoleColors.RESET);
         }
 
-        try {
-            usuario = new Usuario(nome, username, email, encriptarSenha(senha, chave), LocalDateTime.now());
-        } catch (Exception e) {
-            System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Ocorreu um erro ao tentar criar o usuário.\nMensagem de erro: " + e.getMessage());
-        }
+        usuario = new Usuario(nome, username, email, senha, LocalDateTime.now());
 
         return usuario;
     }
