@@ -8,10 +8,9 @@ import modelo.Usuario;
 
 import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MenuUsuario {
     private MenuPrincipal menu;
@@ -331,12 +330,12 @@ public class MenuUsuario {
         while (true) {
             System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "==== Feed de notícias ====" + ConsoleColors.RESET);
             for (Usuario u : usuarioLogado.getAmigos()) {
-                Collections.copy(postsDoFeed, u.getPosts());
+                postsDoFeed.addAll(u.getPosts());
             }
             if (postsDoFeed.isEmpty()) {
                 System.out.println("Ops, não tem nada para ver aqui 😕");
             } else {
-                postSelecionado = gerenciadorPosts.buscarPorId(listarPostsPaginados(gerenciadorPosts.ordenarPorData(usuarioLogado.getPosts())));
+                postSelecionado = gerenciadorPosts.buscarPorId(listarPostsPaginados(gerenciadorPosts.ordenarPorData(postsDoFeed)));
                 if(postSelecionado != null) {
                     interagirComPost(postSelecionado);
                 }
