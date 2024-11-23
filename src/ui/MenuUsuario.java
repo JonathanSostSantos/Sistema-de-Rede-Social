@@ -193,12 +193,10 @@ public class MenuUsuario {
             System.out.println("Seus posts:");
             postSelecionado = gerenciadorPosts.buscarPorId(listarPostsPaginados(gerenciadorPosts.ordenarPorData(usuarioLogado.getPosts())));
 
-            postEstaSelecionado = postSelecionado != null;
-
-            if (postEstaSelecionado) {
+            if (postSelecionado != null) {
                 interagirComPost(postSelecionado);
-                break;
             }
+            break;
         }
     }
 
@@ -318,7 +316,9 @@ public class MenuUsuario {
                 System.out.println("Ops, não tem nada para ver aqui 😕");
             } else {
                 postSelecionado = gerenciadorPosts.buscarPorId(listarPostsPaginados(gerenciadorPosts.ordenarPorData(usuarioLogado.getPosts())));
-                interagirComPost(postSelecionado);
+                if(postSelecionado != null) {
+                    interagirComPost(postSelecionado);
+                }
                 break;
             }
         }
