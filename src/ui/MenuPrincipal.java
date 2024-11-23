@@ -97,6 +97,14 @@ public class MenuPrincipal {
     }
 
     private void cadastrarUsuario() {
+        Usuario usuario = validarUsuario();
+        if (usuario != null) {
+            gerenciadorUsuarios.cadastrar(usuario);
+            System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Usuário cadastrado com sucesso!" + ConsoleColors.RESET);
+        }
+    }
+
+    public Usuario validarUsuario() {
         String valorInserido;
         String nome;
         String username;
@@ -104,6 +112,8 @@ public class MenuPrincipal {
         String senha;
         Boolean nomeValido;
         Boolean senhaValida;
+        Usuario usuario = null;
+
         System.out.println(ConsoleColors.BLUE_BACKGROUND + "==== Criação de Usuário ====" + ConsoleColors.RESET);
 
         while (true) {
@@ -140,13 +150,13 @@ public class MenuPrincipal {
             }
         }
 
-        while(true) {
+        while (true) {
             System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "\nEmail: " + ConsoleColors.RESET);
             valorInserido = leitor.nextLine().trim();
 
             if (!validarEmail(valorInserido)) {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Este email é inválido!" + ConsoleColors.RESET);
-            } else if(gerenciadorUsuarios.buscarPorEmail(valorInserido) != null) {
+            } else if (gerenciadorUsuarios.buscarPorEmail(valorInserido) != null) {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Este email já está em uso." + ConsoleColors.RESET);
             } else {
                 email = valorInserido;
@@ -154,7 +164,7 @@ public class MenuPrincipal {
             }
         }
 
-        while(true) {
+        while (true) {
             System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "\nSenha: " + ConsoleColors.RESET);
             valorInserido = leitor.nextLine().trim();
 
@@ -176,8 +186,13 @@ public class MenuPrincipal {
                     (!senhaContemMinuscula(valorInserido) ? "\n  • A senha não possui pelo menos 1 letra minúscula." : "") + ConsoleColors.RESET);
         }
 
-        gerenciadorUsuarios.cadastrar(new Usuario(nome, username, email, senha, LocalDateTime.now()));
-        System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Usuário cadastrado com sucesso!" + ConsoleColors.RESET);
+        try {
+            usuario = new Usuario(nome, username, email, encriptarSenha(senha, chave), LocalDateTime.now());
+        } catch (Exception e) {
+            System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Ocorreu um erro ao tentar criar o usuário.\nMensagem de erro: " + e.getMessage());
+        }
+
+        return usuario;
     }
 
     private void exibirMenuLogado(Usuario usuario) {
@@ -196,7 +211,7 @@ public class MenuPrincipal {
     }
 
     public boolean validarEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
                 "A-Z]{2,7}$";
