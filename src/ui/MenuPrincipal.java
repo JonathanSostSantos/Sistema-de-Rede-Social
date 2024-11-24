@@ -53,6 +53,7 @@ public class MenuPrincipal {
         menu.setGerenciadorPosts(gerenciadorPosts);
         menu.setGerenciadorUsuarios(gerenciadorUsuarios);
         menu.getGerenciadorPosts().setGerenciadorUsuarios(gerenciadorUsuarios);
+        menu.getGerenciadorUsuarios().setGerenciadorPosts(gerenciadorPosts);
 
         //Tenta gerar a chave de encriptação e joga uma mensagem de erro case falhar
         try {

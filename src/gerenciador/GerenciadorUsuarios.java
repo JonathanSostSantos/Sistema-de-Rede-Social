@@ -1,5 +1,6 @@
 package gerenciador;
 
+import modelo.Post;
 import modelo.Usuario;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 public class GerenciadorUsuarios {
     private List<Usuario> usuarios;
     private Integer proximoId;
+    private GerenciadorPosts gerenciadorPosts;
 
     /**
      * Construtor do gerenciador de usuários.
@@ -21,6 +23,10 @@ public class GerenciadorUsuarios {
     public GerenciadorUsuarios() {
         this.usuarios = new ArrayList<>();
         this.proximoId = 1;
+    }
+
+    public void setGerenciadorPosts(GerenciadorPosts gerenciadorPosts) {
+        this.gerenciadorPosts = gerenciadorPosts;
     }
 
     /**
@@ -138,8 +144,19 @@ public class GerenciadorUsuarios {
      * @return Retorna true se o usuário for deletado e vice-versa
      */
     public boolean deletar(int id) {
+        List<Usuario> amigosASeremRemovidos;
+        List<Post> postsASeremDeletados = new ArrayList<>();
         for (Usuario u : usuarios) {
             if (u.getId().equals(id)) {
+                amigosASeremRemovidos = u.getAmigos();
+                for (Usuario amigo : amigosASeremRemovidos) {
+                    amigo.removerAmigo(u);
+                }
+
+                postsASeremDeletados = u.getPosts();
+                for (Post p : postsASeremDeletados) {
+                    gerenciadorPosts.deletar(p.getId());
+                }
                 usuarios.remove(u);
                 return true;
             }

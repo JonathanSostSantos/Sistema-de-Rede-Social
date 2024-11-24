@@ -32,10 +32,6 @@ public class MenuUsuario {
         this.chave = chave;
     }
 
-    public GerenciadorPosts getGerenciadorPosts() {
-        return gerenciadorPosts;
-    }
-
     /**
      * Construtor da classe MenuUsuario.
      * Inicializa o scanner, o menu principal, o gerenciador de usuários e o gerenciador de posts.
@@ -45,6 +41,14 @@ public class MenuUsuario {
         this.menu = new MenuPrincipal();
         this.gerenciadorUsuarios = new GerenciadorUsuarios();
         this.gerenciadorPosts = new GerenciadorPosts();
+    }
+
+    public GerenciadorPosts getGerenciadorPosts() {
+        return gerenciadorPosts;
+    }
+
+    public GerenciadorUsuarios getGerenciadorUsuarios() {
+        return gerenciadorUsuarios;
     }
 
     public void setGerenciadorUsuarios(GerenciadorUsuarios gerenciadorUsuarios) {
@@ -71,7 +75,8 @@ public class MenuUsuario {
             System.out.println("3- Buscar usuários");
             System.out.println("4- Gerenciar amizades");
             System.out.println("5- Ver feed de notícias");
-            System.out.println("6- Logout" + ConsoleColors.RESET);
+            System.out.println("6- Apagar conta");
+            System.out.println("7- Logout" + ConsoleColors.RESET);
 
             //Faz a validação do input gerado pelo usuário para garantir que não ocorra uma Exception ao tentar converter a String para int
             opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine().trim());
@@ -94,6 +99,9 @@ public class MenuUsuario {
                         verFeedNoticias();
                         break;
                     case 6:
+                        deletarUsuario();
+                        return;
+                    case 7:
                         System.out.println(ConsoleColors.YELLOW_UNDERLINED + "Logout realizado!" + ConsoleColors.RESET);
                         return;
                     default:
@@ -126,6 +134,19 @@ public class MenuUsuario {
                 System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Post publicado com sucesso!" + ConsoleColors.RESET);
                 break;
             }
+        }
+    }
+
+    private void deletarUsuario() {
+        String valorInserido;
+        System.out.println(ConsoleColors.RED_BACKGROUND_BRIGHT + ConsoleColors.BLACK_BOLD + "Você tem certeza que deseja apagar sua conta? Após confirmação, não há como voltar atrás." + ConsoleColors.RESET + ConsoleColors.YELLOW_BOLD_BRIGHT + " (S/N)" + ConsoleColors.RESET);
+        valorInserido = leitor.nextLine();
+
+        if (valorInserido.trim().equalsIgnoreCase("S")) {
+            gerenciadorUsuarios.deletar(usuarioLogado.getId());
+            System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Exclusão de conta realizada com sucesso!" + ConsoleColors.RESET);
+        } else {
+            System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "Exclusão da conta cancelada!" + ConsoleColors.RESET);
         }
     }
 
