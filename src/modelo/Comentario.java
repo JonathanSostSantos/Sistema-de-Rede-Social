@@ -44,7 +44,7 @@ public class Comentario {
     @Override
     public String toString() {
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
-        return ConsoleColors.BLUE_BOLD_BRIGHT + autor.getNome() + ConsoleColors.RESET + " - " +
+        return ConsoleColors.BLUE_BOLD_BRIGHT + autor.getNome() + ConsoleColors.WHITE_BOLD + " @" + autor.getUsername() + ConsoleColors.RESET + " - " +
                 ConsoleColors.WHITE_UNDERLINED + dataComentario.format(formatador) + ConsoleColors.RESET + "\n" +
                 ConsoleColors.WHITE_BOLD_BRIGHT + conteudo + ConsoleColors.RESET + "\n";
     }

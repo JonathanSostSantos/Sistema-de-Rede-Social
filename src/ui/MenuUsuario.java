@@ -271,9 +271,10 @@ public class MenuUsuario {
         Boolean ehAmigo;
 
         while (true) {
-            System.out.println("Digite o nome do usuário a ser buscado:");
+            System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "Digite o nome do usuário a ser buscado:" + ConsoleColors.RESET);
             valorInserido = leitor.nextLine();
 
+            //Traz os usuários que contêm o valor digitado no nome.
             usuarios = gerenciadorUsuarios.buscarPorNome(valorInserido);
 
             if (usuarios.isEmpty()) {
@@ -294,8 +295,8 @@ public class MenuUsuario {
                     case 0:
                         return;
                     default:
-                        if (opcaoSelecionada < usuarios.size() - 1) {
-                            usuarioSelecionado = usuarios.get(opcaoSelecionada);
+                        if (opcaoSelecionada <= usuarios.size()) {
+                            usuarioSelecionado = usuarios.get(opcaoSelecionada-1);
                             ehAmigo = ehAmigo(usuarioLogado, usuarioSelecionado);
                             System.out.println(usuarioSelecionado);
                             System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- " + (ehAmigo ? "Remover" : "Adicionar") + " amigo");
@@ -304,10 +305,14 @@ public class MenuUsuario {
 
                             switch (opcaoSelecionada) {
                                 case 1:
-                                    if (ehAmigo) {
-                                        gerenciadorUsuarios.removerAmizade(usuarioLogado.getId(), usuarioSelecionado.getId());
+                                    if (usuarioSelecionado != usuarioLogado) {
+                                        if (ehAmigo) {
+                                            gerenciadorUsuarios.removerAmizade(usuarioLogado.getId(), usuarioSelecionado.getId());
+                                        } else {
+                                            gerenciadorUsuarios.adicionarAmizade(usuarioLogado.getId(), usuarioSelecionado.getId());
+                                        }
                                     } else {
-                                        gerenciadorUsuarios.adicionarAmizade(usuarioLogado.getId(), usuarioSelecionado.getId());
+                                        System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Você não pode se adicionar." + ConsoleColors.RESET);
                                     }
                                     break;
                                 case 2:

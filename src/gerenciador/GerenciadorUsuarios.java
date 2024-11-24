@@ -75,7 +75,7 @@ public class GerenciadorUsuarios {
         List<Usuario> usuariosARetornar = new ArrayList<>();
 
         for (Usuario u : usuarios) {
-            if (u.getNome().equalsIgnoreCase(nome)) {
+            if (u.getNome().toLowerCase().contains(nome.toLowerCase())) {
                 usuariosARetornar.add(u);
             }
         }
