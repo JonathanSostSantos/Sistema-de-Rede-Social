@@ -183,9 +183,11 @@ public class MenuUsuario {
             return -1;
         }
 
+        //Cada página possui 10 posts
         totalPaginas = totalPosts / 10;
 
         while (true) {
+            //Se for a última página, o número de posts apresentados será o resto da divisão do total de posts por 10
             postsNaPagina = pagina.equals(totalPaginas) ? totalPosts % 10 : 10;
             for (int i = pagina * 10; i < (pagina * 10) + postsNaPagina; i++) {
                 System.out.println(ConsoleColors.WHITE + (1 + i % 10) + "- " + ConsoleColors.RESET + posts.get(i));
@@ -194,6 +196,7 @@ public class MenuUsuario {
             System.out.println(ConsoleColors.WHITE_UNDERLINED + "(Selecione o post para interagir ou digite 0 para retornar)" + ConsoleColors.RESET);
             valorInserido = leitor.nextLine();
 
+            //Realiza a navegação pelas páginas de posts ou retorna o post com o qual o usuário deseja interagir.
             switch (valorInserido) {
                 case "<<":
                     if (pagina > 1) pagina = 0;
@@ -229,6 +232,9 @@ public class MenuUsuario {
         }
     }
 
+    /**
+     * Apresenta os posts do usuário que está logado no seu perfil.
+     */
     private void verPosts() {
         Post postSelecionado;
 
@@ -243,7 +249,9 @@ public class MenuUsuario {
         }
     }
 
-
+    /**
+     * Edita o usuário logado com os dados informados pelo próprio.
+     */
     private void editarPerfil() {
         usuarioLogado = menu.validarUsuario(2, usuarioLogado, chave);
 
@@ -252,6 +260,9 @@ public class MenuUsuario {
         }
     }
 
+    /**
+     * Busca usuários com base no nome fornecido pelo usuário.
+     */
     private void buscarUsuarios() {
         String valorInserido;
         Integer opcaoSelecionada;
@@ -277,6 +288,7 @@ public class MenuUsuario {
 
             opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
 
+            //Apresenta as opções para interagir com o usuário selecionado.
             if (opcaoSelecionada != null) {
                 switch (opcaoSelecionada) {
                     case 0:
@@ -308,6 +320,10 @@ public class MenuUsuario {
         }
     }
 
+    /**
+     * Apresenta as amizades do usuário logado.
+     * É possível ver as informações dos amigos e removê-los através deste menu.
+     */
     private void gerenciarAmizades() {
         List<Usuario> amigos = usuarioLogado.getAmigos();
         Usuario amigo;
@@ -354,6 +370,9 @@ public class MenuUsuario {
         }
     }
 
+    /**
+     * Apresenta os posts do usuário logado e seus amigos em ordem crescente por data.
+     */
     private void verFeedNoticias() {
         List<Post> postsDoFeed = new ArrayList<>(usuarioLogado.getPosts());
         Post postSelecionado;
@@ -375,6 +394,11 @@ public class MenuUsuario {
         }
     }
 
+    /**
+     * Apresenta os usuários que curtiram o post selecionado.
+     *
+     * @param post O post selecionado.
+     */
     private void mostrarCurtidas(Post post) {
         List<Usuario> curtidas = post.getCurtidas();
 
@@ -389,6 +413,11 @@ public class MenuUsuario {
         System.out.println(ConsoleColors.RESET);
     }
 
+    /**
+     * Apresenta os comentários do post selecionado.
+     *
+     * @param post O post selecionado.
+     */
     private void mostrarComentarios(Post post) {
         List<Comentario> comentarios = post.getComentarios();
 
@@ -403,6 +432,11 @@ public class MenuUsuario {
         System.out.println(ConsoleColors.RESET);
     }
 
+    /**
+     * Solicita que o usuário informe o que deseja comentar no post e adiciona o comentário ao mesmo.
+     *
+     * @param post O post ao qual será comentado.
+     */
     private void comentar(Post post) {
         String valorInserido;
         while (true) {
@@ -420,6 +454,11 @@ public class MenuUsuario {
         }
     }
 
+    /**
+     * Apresenta as opções de interação com o post selecinado.
+     *
+     * @param post O post selecionado.
+     */
     private void interagirComPost(Post post) {
         Integer opcaoSelecionada;
 
@@ -461,10 +500,22 @@ public class MenuUsuario {
         }
     }
 
+    /**
+     * Deleta o post selecionado.
+     *
+     * @param post O post selecionado.
+     */
     private void deletarPost(Post post) {
         gerenciadorPosts.deletar(post.getId());
     }
 
+    /**
+     * Verifica se os usuários são amigos.
+     *
+     * @param usuario1 O primeiro usuário a ser verificado.
+     * @param usuario2 O segundo usuário a ser verificado.
+     * @return
+     */
     private boolean ehAmigo(Usuario usuario1, Usuario usuario2) {
         for (Usuario u : usuario1.getAmigos()) {
             if (u == usuario2) return true;
