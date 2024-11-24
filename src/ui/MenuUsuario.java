@@ -477,7 +477,9 @@ public class MenuUsuario {
             System.out.println("2- Mostrar comentários");
             System.out.println("3-" + (post.jaCurtiu(usuarioLogado) ? " Desc" : " C") + "urtir");
             System.out.println("4- Comentar");
-            System.out.println("5- Deletar");
+            if (post.getAutor() == usuarioLogado) {
+                System.out.println("5- Deletar");
+            }
             System.out.println("6- Voltar" + ConsoleColors.RESET);
 
             opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
@@ -500,7 +502,10 @@ public class MenuUsuario {
                         comentar(post);
                         break;
                     case 5:
-                        deletarPost(post);
+                        if (post.getAutor() == usuarioLogado) {
+                            deletarPost(post);
+                            return;
+                        }
                         break;
                     case 6:
                         return;
@@ -515,7 +520,9 @@ public class MenuUsuario {
      * @param post O post selecionado.
      */
     private void deletarPost(Post post) {
+        usuarioLogado.getPosts().remove(post);
         gerenciadorPosts.deletar(post.getId());
+        System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Post deletado com sucesso!");
     }
 
     /**
