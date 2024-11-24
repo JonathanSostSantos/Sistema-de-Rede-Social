@@ -14,6 +14,12 @@ import java.util.Base64;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+/**
+ * Classe responsável pela interface do menu principal com o usuário via console.
+ * Gerencia todas as interações do usuário com o menu principal do sistema.
+ *
+ * @author Jonathan Sost Dos Santos
+ */
 public class MenuPrincipal {
     private Scanner leitor;
     private GerenciadorUsuarios gerenciadorUsuarios;
@@ -22,20 +28,33 @@ public class MenuPrincipal {
     private SecretKey chave;
     private MenuUsuario menu;
 
+    /**
+     * Construtor da classe MenuPrincipal.
+     * Inicializa o scanner, o gerenciador de posts e o gerenciador de usuários.
+     */
     public MenuPrincipal() {
         this.leitor = new Scanner(System.in);
         this.gerenciadorPosts = new GerenciadorPosts();
         this.gerenciadorUsuarios = new GerenciadorUsuarios();
     }
 
+    /**
+     * Exibe o menu principal e processa as escolhas do usuário.
+     * Loop principal do programa.
+     */
     public void exibirMenu() {
         Integer opcaoSelecionada;
         Usuario usuario1;
         Usuario usuario2;
+
+        //Inicializa o menu do usuário que será utilizado posteriormente
+        //Atribui os gerenciadores de posts e usuários para o menu que também serão utilizados por lá
         menu = new MenuUsuario();
         menu.setGerenciadorPosts(gerenciadorPosts);
         menu.setGerenciadorUsuarios(gerenciadorUsuarios);
         menu.getGerenciadorPosts().setGerenciadorUsuarios(gerenciadorUsuarios);
+
+        //Tenta gerar a chave de encriptação e joga uma mensagem de erro case falhar
         try {
             chave = gerarChave();
             menu.setChave(chave);
@@ -43,6 +62,7 @@ public class MenuPrincipal {
             System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Ocorreu um erro inesperado ao gerar a chave de encriptação.\nMensagem de erro: " + e.getMessage() + ConsoleColors.RESET);
         }
 
+        //Tenta criar os usuários e posts para teste unitário rápido
         try {
             usuario1 = new Usuario("teste da silva", "teste", "teste@gmail.com", encriptarSenha("Teste1200", chave));
             gerenciadorUsuarios.cadastrar(usuario1);
@@ -84,6 +104,7 @@ public class MenuPrincipal {
             System.out.println("Ocorreu um erro ao gerar os testes unitários.\nMensagem de erro: " + e.getMessage());
         }
 
+        //Loop principal do menu
         while (true) {
             System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "===███████ ██    ██ ███    ██ ██     ██ ██ ████████ ████████ ███████ ██████===  \n" +
                     "===██      ██    ██ ████   ██ ██     ██ ██    ██       ██    ██      ██   ██=== \n" +
@@ -92,8 +113,11 @@ public class MenuPrincipal {
                     "===██       ██████  ██   ████  ███ ███  ██    ██       ██    ███████ ██   ██=== " + ConsoleColors.RESET);
             System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "\n\n1 -> Fazer login");
             System.out.println("\n2 -> Cadastrar usuário" + ConsoleColors.RESET);
+
+            //Faz a validação do input gerado pelo usuário para garantir que não ocorra uma Exception ao tentar converter a String para int
             opcaoSelecionada = validarEntradaInteira(leitor.nextLine().trim());
 
+            //Caso seja um número, fazer o switch
             if (opcaoSelecionada != null) {
                 switch (opcaoSelecionada) {
                     case 1:
@@ -109,28 +133,38 @@ public class MenuPrincipal {
         }
     }
 
+    /**
+     * Solicita as informações para login e valida se as informações correspondem a um usuário.
+     */
     private void fazerLogin() {
         String username;
         Usuario usuario;
 
+        //Loop da tela de login
         while (true) {
             System.out.print(ConsoleColors.WHITE_UNDERLINED + "Informe seu nome de usuário:" + ConsoleColors.RESET);
             username = leitor.nextLine();
+
+            //Verifica se o usuário com o username informado pelo usuário existe
             usuario = gerenciadorUsuarios.buscarPorUsername(username);
 
+            //Caso não exista, informa ao usuário para tentar novamente
             if (usuario == null) {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Não há um usuário cadastrado com este nome. Tente novamente." + ConsoleColors.RESET);
             } else {
                 while (true) {
                     System.out.print(ConsoleColors.WHITE_UNDERLINED + "Informe sua senha:" + ConsoleColors.RESET);
                     try {
+                        //Encripta a senha informada e compara com a do usuário cujo username foi informado anteriormente. Caso não batam, solicita que o usuário tente novamente.
                         if (usuario.getSenha().equals(encriptarSenha(leitor.nextLine().trim(), chave))) {
                             System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Login efetuado!" + ConsoleColors.RESET);
+
+                            //Caso o login seja efetuado, abre o menu de usuário.
                             exibirMenuLogado(usuario);
                             return;
                         }
                     } catch (Exception e) {
-                        System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Houve um erro inesperado ao tentar acessar sua senha.\nMensagem de erro: " + e.getMessage() + ConsoleColors.RESET);
+                        System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Houve um erro inesperado ao tentar acessar sua conta.\nMensagem de erro: " + e.getMessage() + ConsoleColors.RESET);
                     }
                     System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Senha incorreta. Tente novamente." + ConsoleColors.RESET);
                 }
@@ -138,14 +172,28 @@ public class MenuPrincipal {
         }
     }
 
+    /**
+     * Solicita as informações para a criação de um usuário e valida as mesmas antes de cadastrar.
+     */
     private void cadastrarUsuario() {
+        //Valida as informações que serão passadas pelo usuário por console.
         Usuario usuario = validarUsuario(1);
+
+        //Caso as informações estejam de acordo, cadastra o usuário.
         if (usuario != null) {
             gerenciadorUsuarios.cadastrar(usuario);
             System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Usuário cadastrado com sucesso!" + ConsoleColors.RESET);
         }
     }
 
+    /**
+     * Faz a validação das informações que serão utilizadas para cadastrar ou atualizar um usuário.
+     *
+     * @param operacao O tipo de operação que acontecerá - 1 = Criação | 2 = Atualização
+     * @param usuarioSendoAlterado O usuário cujas informações serão atualizadas (Caso seja atualização)
+     * @param chave A chave de encriptação utilizada na senha
+     * @return O usuário com as informações passadas
+     */
     public Usuario validarUsuario(int operacao, Usuario usuarioSendoAlterado, SecretKey chave) {
         String valorInserido;
         String nome;
@@ -156,20 +204,25 @@ public class MenuPrincipal {
         Boolean senhaValida;
         Usuario usuario;
 
+        //Texto dinâmico para criação/alteração de usuário
         System.out.println(ConsoleColors.BLUE_BACKGROUND + ConsoleColors.BLACK_BOLD + "==== " + (operacao == 1 ? "Criação" : "Alteração") + " de Usuário ====" + ConsoleColors.RESET);
 
         while (true) {
+            //Caso seja alteração de usuário, apresenta os dados atuais do mesmo.
             if (operacao == 2) {
                 System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "Nome atual: " + ConsoleColors.RESET + ConsoleColors.BLUE_BOLD_BRIGHT + usuarioSendoAlterado.getNome());
             }
             System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "\nNome completo: " + ConsoleColors.RESET);
             valorInserido = leitor.nextLine().trim();
 
+            //Caso seja criação de usuário, garantir que o valor digitado pelo usuário não tenha menos que 2 caracteres.
+            //Caso seja alteração de usuário, garantir apenas que o valor não tenha 1 caractere (caso possua zero caracteres, não será atualizado)
             if ((valorInserido.length() < 2 && operacao == 1) || (valorInserido.length() == 1 && operacao == 2)) {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "O nome de usuário deve conter 2 ou mais caracteres." + ConsoleColors.RESET);
             } else {
                 nomeValido = true;
                 for (Character c : valorInserido.toLowerCase().toCharArray()) {
+                    //Certifica que os caracteres do nome são apenas letras ou espaços
                     if (!Character.isLetter(c) && c != 32) {
                         nomeValido = false;
                         System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "São permitidas apenas letras no nome." + ConsoleColors.RESET);
@@ -191,6 +244,7 @@ public class MenuPrincipal {
             System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "\nUsername: " + ConsoleColors.RESET);
             valorInserido = leitor.nextLine().trim();
 
+            //Se houver outro usuário com o mesmo username, avisará que já está em uso e não prosseguirá.
             if (gerenciadorUsuarios.buscarPorUsername(valorInserido) != null) {
                 System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Username já em uso." + ConsoleColors.RESET);
             } else if (valorInserido.isBlank() && operacao == 1) {
@@ -223,6 +277,7 @@ public class MenuPrincipal {
 
         while (true) {
             if (operacao == 2) {
+                //Apresenta a senha do usuário censurada com o caractere '*'
                 System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "Senha atual: " + ConsoleColors.RESET + ConsoleColors.BLUE_BOLD_BRIGHT + censurarSenha(usuarioSendoAlterado.getSenha(), chave) + ConsoleColors.RESET);
             }
             System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "\nSenha: " + ConsoleColors.RESET);
@@ -232,8 +287,10 @@ public class MenuPrincipal {
                 senha = valorInserido;
                 break;
             } else {
+                //Verifica se a senha possui 6 ou mais caracteres, se possui pelo menos 1 número e se possui pelo menos 1 letra maiúscula e 1 minúscula.
                 senhaValida = valorInserido.length() >= 6 && valorInserido.matches(".*[0-9].*") && senhaContemMaiuscula(valorInserido) && senhaContemMinuscula(valorInserido);
 
+                //Se a senha for válida, realiza a encriptação para cadastrar o usuário.
                 if (senhaValida) {
                     try {
                         senha = encriptarSenha(valorInserido, chave);
@@ -251,6 +308,7 @@ public class MenuPrincipal {
             }
         }
 
+        //Se for criação, retorna o usuário sem ID. Caso contrário, retorna o usuário com o ID do usuário que está sendo alterado.
         if (operacao == 1) {
             usuario = new Usuario(nome, username, email, senha);
         } else {
@@ -260,15 +318,33 @@ public class MenuPrincipal {
         return usuario;
     }
 
+    /**
+     * Realiza a validação dos dados do usuário informados passando apenas a operação que está sendo realizada como parãmetro.
+     * Método utilizado únicamente para a criação de usuário.
+     *
+     * @param operacao A operação que está sendo realizada - 1 = Criação | 2 = Alteração
+     * @return O usuário já validado.
+     */
     public Usuario validarUsuario(int operacao) {
         return validarUsuario(operacao, null, null);
     }
 
+    /**
+     * Exibe o menu do usuário após realizar o login.
+     *
+     * @param usuario O usuário que será logado.
+     */
     private void exibirMenuLogado(Usuario usuario) {
         menu.setUsuarioLogado(usuario);
         menu.exibirMenu();
     }
 
+    /**
+     * Faz a validação para que haja a conversão de String para int sem a possibilidade de jogar uma Exception.
+     *
+     * @param value O valor a ser convertido para int.
+     * @return O valor convertido.
+     */
     public Integer validarEntradaInteira(String value) {
         try {
             return Integer.parseInt(value);
@@ -278,6 +354,12 @@ public class MenuPrincipal {
         }
     }
 
+    /**
+     * Realiza a validação de email para certificar de que o mesmo é válido.
+     *
+     * @param email O email a ser validado.
+     * @return Retorna true se o email for válido e false se não for.
+     */
     public boolean validarEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
                 "[a-zA-Z0-9_+&*-]+)*@" +
@@ -290,6 +372,12 @@ public class MenuPrincipal {
         return pat.matcher(email).matches();
     }
 
+    /**
+     * Verifica se a senha informada possui letras maiúsculas.
+     *
+     * @param senha A senha a ser verificada.
+     * @return Retorna true se a senha possuir letras maiúsculas e false caso contrário.
+     */
     public boolean senhaContemMaiuscula(String senha) {
         for (Character c : senha.toCharArray()) {
             if (Character.isUpperCase(c)) {
@@ -300,6 +388,12 @@ public class MenuPrincipal {
         return false;
     }
 
+    /**
+     * Verifica se a senha informada possui letras minúsculas.
+     *
+     * @param senha A senha a ser verificada.
+     * @return Retorna true se a senha possuir letras minúsculas e false caso contrário.
+     */
     public boolean senhaContemMinuscula(String senha) {
         for (Character c : senha.toCharArray()) {
             if (Character.isLowerCase(c)) {
@@ -310,12 +404,26 @@ public class MenuPrincipal {
         return false;
     }
 
+    /**
+     * Gera a chave que será utilizada para encriptar as senhas.
+     *
+     * @return A chave de encriptação.
+     * @throws Exception se não for possível gerar a chave
+     */
     private static SecretKey gerarChave() throws Exception {
         KeyGenerator keyGen = KeyGenerator.getInstance(algoritmo);
         keyGen.init(128);
         return keyGen.generateKey();
     }
 
+    /**
+     * Encripta a senha utilizando a chave gerada.
+     *
+     * @param senha A senha a ser encriptada.
+     * @param chave A chave de encriptação.
+     * @return A senha encriptada.
+     * @throws Exception se houver falha ao encriptar a senha
+     */
     public static String encriptarSenha(String senha, SecretKey chave) throws Exception {
         Cipher cipher = Cipher.getInstance(algoritmo);
         cipher.init(Cipher.ENCRYPT_MODE, chave);
@@ -323,6 +431,14 @@ public class MenuPrincipal {
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
 
+    /**
+     * Decripta a senha utilizando a chave gerada.
+     *
+     * @param senhaEncriptada A senha a ser decriptada.
+     * @param chave A chave de encriptação.
+     * @return A senha decriptada.
+     * @throws Exception se houver falha ao decriptar a senha.
+     */
     public static String decriptarSenha(String senhaEncriptada, SecretKey chave) throws Exception {
         Cipher cipher = Cipher.getInstance(algoritmo);
         cipher.init(Cipher.DECRYPT_MODE, chave);
@@ -330,6 +446,13 @@ public class MenuPrincipal {
         return new String(decryptedBytes);
     }
 
+    /**
+     * Censura a senha do usuário com o caracter '*'.
+     *
+     * @param senha A senha encriptada.
+     * @param chave A chave utilizada para decriptar a senha.
+     * @return A senha censurada.
+     */
     private String censurarSenha(String senha, SecretKey chave) {
         char[] caracteres;
         try {
