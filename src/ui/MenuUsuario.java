@@ -299,8 +299,10 @@ public class MenuUsuario {
                             usuarioSelecionado = usuarios.get(opcaoSelecionada-1);
                             ehAmigo = ehAmigo(usuarioLogado, usuarioSelecionado);
                             System.out.println(usuarioSelecionado);
-                            System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- " + (ehAmigo ? "Remover" : "Adicionar") + " amigo");
-                            System.out.println("2- Voltar" + ConsoleColors.RESET);
+                            if (usuarioSelecionado != usuarioLogado) {
+                                System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- " + (ehAmigo ? "Remover" : "Adicionar") + " amigo");
+                            }
+                            System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "2- Voltar" + ConsoleColors.RESET);
                             opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
 
                             switch (opcaoSelecionada) {
@@ -311,8 +313,6 @@ public class MenuUsuario {
                                         } else {
                                             gerenciadorUsuarios.adicionarAmizade(usuarioLogado.getId(), usuarioSelecionado.getId());
                                         }
-                                    } else {
-                                        System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Você não pode se adicionar." + ConsoleColors.RESET);
                                     }
                                     break;
                                 case 2:
@@ -358,14 +358,18 @@ public class MenuUsuario {
                 } else if (opcaoSelecionada <= amigos.size() && opcaoSelecionada > 0) {
                     amigo = amigos.get(opcaoSelecionada-1);
                     System.out.println(amigo);
-                    System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Remover amigo");
+                    if (amigo != usuarioLogado) {
+                        System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Remover amigo");
+                    }
                     System.out.println("2- Voltar" + ConsoleColors.RESET);
                     opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
 
                     switch (opcaoSelecionada) {
                         case 1:
-                            gerenciadorUsuarios.removerAmizade(usuarioLogado.getId(), amigo.getId());
-                            System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Amigo removido com sucesso!" + ConsoleColors.RESET);
+                            if (amigo != usuarioLogado) {
+                                gerenciadorUsuarios.removerAmizade(usuarioLogado.getId(), amigo.getId());
+                                System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Amigo removido com sucesso!" + ConsoleColors.RESET);
+                            }
                             break;
                         case 2:
                             return;
