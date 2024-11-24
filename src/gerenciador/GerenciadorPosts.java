@@ -84,7 +84,7 @@ public class GerenciadorPosts {
         posts.sort((post1, post2) -> {
             if (post1.getDataPublicacao() == null || post2.getDataPublicacao() == null)
                 return 0;
-            return post1.getDataPublicacao().compareTo(post2.getDataPublicacao());
+            return post2.getDataPublicacao().compareTo(post1.getDataPublicacao());
         });
 
         return posts;
