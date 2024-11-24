@@ -281,7 +281,7 @@ public class MenuUsuario {
 
         if (usuarioASerAlterado != null) {
             usuarioASerAlterado.setId(usuarioLogado.getId());
-            gerenciadorUsuarios.atualizar(usuarioLogado);
+            gerenciadorUsuarios.atualizar(usuarioASerAlterado);
         }
     }
 
