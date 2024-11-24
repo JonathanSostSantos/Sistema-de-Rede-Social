@@ -76,7 +76,7 @@ Caso o texto atinja esses critérios, o sistema apresentará a mensagem "Post pu
 
 ### Ver meu perfil
 
-Retornando ao menu de logado, ao selecionar a opção ver meu perfil, seu nome completo irá aparecer suas informações, juntamente com outras opções:
+Retornando ao menu de logado, ao selecionar a opção ver meu perfil, o sistema irá lhe apresentar suas informações, juntamente com outras opções:
 
 ![Visualização do perfil do usuário logado](./imagens/vermeuperfil.png)
 
@@ -86,7 +86,7 @@ Ao selecionar a opção ver posts, o sistema irá apresentar todos os posts do u
 
 ![Ver posts do usuário logado](./imagens/verposts.png)
 
-Nesta página, você tem algumas opções, como selecionar o número do post com o qual você deseja interagir, retornar digitando 0 ou navegar pelas páginas utilizando os seguintes comandos:
+Nesta página, você tem algumas opções, como selecionar o número do post com o qual você deseja interagir, retornar digitando '0', ou navegar pelas páginas utilizando os seguintes comandos:
 - '<' para retornar 1 página
 - '<<' para retornar para a primeira página
 - '>' para avançar 1 página
@@ -96,7 +96,7 @@ Nesta página, você tem algumas opções, como selecionar o número do post com
 
 ### Interações com posts
 
-Ao selecionar um post para interagir, o post será destacado e as opções de interação serão destacadas.
+Ao selecionar um post para interagir, o post será destacado e as opções de interação serão apresentadas.
 
 ![Opções de interação com o post](./imagens/opcoesinteracaopost.png)
 
