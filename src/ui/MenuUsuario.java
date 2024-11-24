@@ -160,7 +160,7 @@ public class MenuUsuario {
         Integer opcaoSelecionada;
 
         while (true) {
-            System.out.println(ConsoleColors.BLUE_UNDERLINED + usuarioLogado.getNome() + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.BLUE_UNDERLINED + usuarioLogado.getNome() + ConsoleColors.RESET + "\n" + ConsoleColors.WHITE_BOLD + "@" + usuarioLogado.getUsername() + "\n" + usuarioLogado.getEmail() + "\n");
             System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "1- Ver posts");
             System.out.println("2- Amigos");
             System.out.println("3- Editar perfil");
