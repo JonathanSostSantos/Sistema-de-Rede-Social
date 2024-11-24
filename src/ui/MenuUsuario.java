@@ -137,6 +137,9 @@ public class MenuUsuario {
         }
     }
 
+    /**
+     * Deleta o usuário completamente do sistema.
+     */
     private void deletarUsuario() {
         String valorInserido;
         System.out.println(ConsoleColors.RED_BACKGROUND_BRIGHT + ConsoleColors.BLACK_BOLD + "Você tem certeza que deseja apagar sua conta? Após confirmação, não há como voltar atrás." + ConsoleColors.RESET + ConsoleColors.YELLOW_BOLD_BRIGHT + " (S/N)" + ConsoleColors.RESET);
