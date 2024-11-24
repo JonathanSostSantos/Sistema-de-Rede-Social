@@ -3,6 +3,7 @@ package gerenciador;
 import modelo.Comentario;
 import modelo.Post;
 import modelo.Usuario;
+import ui.ConsoleColors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,5 +140,24 @@ public class GerenciadorPosts {
      */
     public boolean deletar(int id) {
         return posts.removeIf(p -> p.getId() == id);
+    }
+
+    public boolean editar(int id, String conteudo) {
+        Post post = buscarPorId(id);
+
+        if (post != null) {
+            for (Post p : posts) {
+                if (post.getId().equals(p.getId())) {
+                    if (!conteudo.isBlank()) {
+                        p.setConteudo(conteudo);
+                    }
+
+                    System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Post atualizado com sucesso!");
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

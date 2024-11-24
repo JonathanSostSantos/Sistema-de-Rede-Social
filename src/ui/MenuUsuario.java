@@ -502,9 +502,10 @@ public class MenuUsuario {
             System.out.println("3-" + (post.jaCurtiu(usuarioLogado) ? " Desc" : " C") + "urtir");
             System.out.println("4- Comentar");
             if (post.getAutor() == usuarioLogado) {
-                System.out.println("5- Deletar");
+                System.out.println("5- Editar post");
+                System.out.println("6- Deletar post");
             }
-            System.out.println("6- Voltar" + ConsoleColors.RESET);
+            System.out.println("7- Voltar" + ConsoleColors.RESET);
 
             opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine());
             if (opcaoSelecionada != null) {
@@ -527,11 +528,16 @@ public class MenuUsuario {
                         break;
                     case 5:
                         if (post.getAutor() == usuarioLogado) {
+                            editarPost(post);
+                        }
+                        break;
+                    case 6:
+                        if (post.getAutor() == usuarioLogado) {
                             deletarPost(post);
                             return;
                         }
                         break;
-                    case 6:
+                    case 7:
                         return;
                 }
             }
@@ -547,6 +553,19 @@ public class MenuUsuario {
         usuarioLogado.getPosts().remove(post);
         gerenciadorPosts.deletar(post.getId());
         System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Post deletado com sucesso!");
+    }
+
+    private void editarPost(Post post) {
+        String novoConteudo;
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "Post atual: " + ConsoleColors.RESET + ConsoleColors.WHITE_BOLD + post.getConteudo());
+        System.out.print(ConsoleColors.BLUE_BOLD_BRIGHT + "Novo post: ");
+        novoConteudo = leitor.nextLine();
+
+        if (novoConteudo.isBlank()) {
+            return;
+        }
+
+        gerenciadorPosts.editar(post.getId(), novoConteudo);
     }
 
     /**

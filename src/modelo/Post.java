@@ -50,6 +50,10 @@ public class Post {
         this.id = id;
     }
 
+    public void setConteudo(String conteudo) {
+        this.conteudo = conteudo;
+    }
+
     public Usuario getAutor() {
         return autor;
     }
