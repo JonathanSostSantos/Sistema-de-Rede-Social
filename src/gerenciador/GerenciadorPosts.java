@@ -137,11 +137,19 @@ public class GerenciadorPosts {
      * Deleta o post selecionado.
      *
      * @param id O ID do post a ser deletado
+     * @return Retorna true se foi possível deletar e false caso contrário.
      */
     public boolean deletar(int id) {
         return posts.removeIf(p -> p.getId() == id);
     }
 
+    /**
+     * Edita o post selecionado.
+     *
+     * @param id O ID do post a ser editado.
+     * @param conteudo O novo conteudo do post.
+     * @return Retorna true se foi possível editar e false caso contrário.
+     */
     public boolean editar(int id, String conteudo) {
         Post post = buscarPorId(id);
 
