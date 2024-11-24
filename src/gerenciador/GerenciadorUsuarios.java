@@ -129,7 +129,7 @@ public class GerenciadorUsuarios {
                     u.setSenha(usuario.getSenha());
                 }
 
-                System.out.println("Usuário atualizado com sucesso! Resultado: " + u);
+                System.out.println("Usuário atualizado com sucesso! Resultado: " + "\n" + u);
                 return true;
             }
         }

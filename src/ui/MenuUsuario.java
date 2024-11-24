@@ -277,9 +277,10 @@ public class MenuUsuario {
      * Edita o usuário logado com os dados informados pelo próprio.
      */
     private void editarPerfil() {
-        usuarioLogado = menu.validarUsuario(2, usuarioLogado, chave);
+        Usuario usuarioASerAlterado = menu.validarUsuario(2, usuarioLogado, chave);
 
-        if (usuarioLogado != null) {
+        if (usuarioASerAlterado != null) {
+            usuarioASerAlterado.setId(usuarioLogado.getId());
             gerenciadorUsuarios.atualizar(usuarioLogado);
         }
     }
