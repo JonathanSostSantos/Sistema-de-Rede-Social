@@ -10,6 +10,12 @@ import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * Classe responsável pela interface do menu logado com o usuário via console.
+ * Gerencia todas as interações do usuário com o menu logado do sistema.
+ *
+ * @author Jonathan Sost Dos Santos
+ */
 public class MenuUsuario {
     private MenuPrincipal menu;
     private Scanner leitor;
@@ -30,11 +36,15 @@ public class MenuUsuario {
         return gerenciadorPosts;
     }
 
+    /**
+     * Construtor da classe MenuUsuario.
+     * Inicializa o scanner, o menu principal, o gerenciador de usuários e o gerenciador de posts.
+     */
     public MenuUsuario() {
         this.leitor = new Scanner(System.in);
-        menu = new MenuPrincipal();
-        gerenciadorUsuarios = new GerenciadorUsuarios();
-        gerenciadorPosts = new GerenciadorPosts();
+        this.menu = new MenuPrincipal();
+        this.gerenciadorUsuarios = new GerenciadorUsuarios();
+        this.gerenciadorPosts = new GerenciadorPosts();
     }
 
     public void setGerenciadorUsuarios(GerenciadorUsuarios gerenciadorUsuarios) {
@@ -45,11 +55,16 @@ public class MenuUsuario {
         this.gerenciadorPosts = gerenciadorPosts;
     }
 
+    /**
+     * Exibe o menu logado e processa as escolhas do usuário.
+     * Loop principal do pós-login.
+     */
     public void exibirMenu() {
         Integer opcaoSelecionada;
 
         System.out.println(ConsoleColors.CYAN_BOLD_BRIGHT + "Bem-vindo(a) de volta, " + ConsoleColors.GREEN_BOLD_BRIGHT + usuarioLogado.getNome() + ConsoleColors.CYAN_BOLD_BRIGHT + "!" + ConsoleColors.RESET);
         while (true) {
+            //Apresenta as principais opções do menu logado e solicita que o usuário informe o que deseja fazer.
             System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "\n\nO que você deseja fazer?" + ConsoleColors.RESET);
             System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "\n1- Criar post");
             System.out.println("2- Ver meu perfil");
@@ -57,6 +72,8 @@ public class MenuUsuario {
             System.out.println("4- Gerenciar amizades");
             System.out.println("5- Ver feed de notícias");
             System.out.println("6- Logout" + ConsoleColors.RESET);
+
+            //Faz a validação do input gerado pelo usuário para garantir que não ocorra uma Exception ao tentar converter a String para int
             opcaoSelecionada = menu.validarEntradaInteira(leitor.nextLine().trim());
 
             if (opcaoSelecionada != null) {
@@ -86,6 +103,9 @@ public class MenuUsuario {
         }
     }
 
+    /**
+     * Valida as informações do post e realiza a publicação.
+     */
     private void criarPost() {
         String valorInserido;
         while (true) {
@@ -109,6 +129,9 @@ public class MenuUsuario {
         }
     }
 
+    /**
+     * Apresenta o perfil do usuário que está logado, além de dar as opções para ver posts, amigos e editar perfil.
+     */
     private void verPerfil() {
         Integer opcaoSelecionada;
 
@@ -140,6 +163,12 @@ public class MenuUsuario {
         }
     }
 
+    /**
+     * Apresenta os posts com um limite de 10 por página, assim como a opção de avançar e retornar as páginas.
+     *
+     * @param posts Os posts que serão apresentados.
+     * @return O post que foi selecionado pelo usuário para interagir
+     */
     private Integer listarPostsPaginados(List<Post> posts) {
         Integer pagina = 0;
         Integer totalPosts = posts.size();
