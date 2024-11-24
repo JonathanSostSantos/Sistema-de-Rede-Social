@@ -192,10 +192,10 @@ public class MenuPrincipal {
      *
      * @param operacao O tipo de operação que acontecerá - 1 = Criação | 2 = Atualização
      * @param usuarioSendoAlterado O usuário cujas informações serão atualizadas (Caso seja atualização)
-     * @param chave A chave de encriptação utilizada na senha
+     * @param chaveSecreta A chave de encriptação utilizada na senha
      * @return O usuário com as informações passadas
      */
-    public Usuario validarUsuario(int operacao, Usuario usuarioSendoAlterado, SecretKey chave) {
+    public Usuario validarUsuario(int operacao, Usuario usuarioSendoAlterado, SecretKey chaveSecreta) {
         String valorInserido;
         String nome;
         String username;
@@ -204,6 +204,8 @@ public class MenuPrincipal {
         Boolean nomeValido;
         Boolean senhaValida;
         Usuario usuario;
+
+        if (chaveSecreta == null) chaveSecreta = chave;
 
         //Texto dinâmico para criação/alteração de usuário
         System.out.println(ConsoleColors.BLUE_BACKGROUND + ConsoleColors.BLACK_BOLD + "==== " + (operacao == 1 ? "Criação" : "Alteração") + " de Usuário ====" + ConsoleColors.RESET);
@@ -279,7 +281,7 @@ public class MenuPrincipal {
         while (true) {
             if (operacao == 2) {
                 //Apresenta a senha do usuário censurada com o caractere '*'
-                System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "Senha atual: " + ConsoleColors.RESET + ConsoleColors.BLUE_BOLD_BRIGHT + censurarSenha(usuarioSendoAlterado.getSenha(), chave) + ConsoleColors.RESET);
+                System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "Senha atual: " + ConsoleColors.RESET + ConsoleColors.BLUE_BOLD_BRIGHT + censurarSenha(usuarioSendoAlterado.getSenha(), chaveSecreta) + ConsoleColors.RESET);
             }
             System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "\nSenha: " + ConsoleColors.RESET);
             valorInserido = leitor.nextLine().trim();
@@ -294,7 +296,7 @@ public class MenuPrincipal {
                 //Se a senha for válida, realiza a encriptação para cadastrar o usuário.
                 if (senhaValida) {
                     try {
-                        senha = encriptarSenha(valorInserido, chave);
+                        senha = encriptarSenha(valorInserido, chaveSecreta);
                         break;
                     } catch (Exception e) {
                         System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Ocorreu um erro ao criar a senha. Tente novamente.\nMensagem de erro: " + e.getMessage() + ConsoleColors.RESET);
