@@ -8,7 +8,7 @@
 
 ## Pré-requisitos
 
-É necessária uma IDE que rode Java (como [Eclipse](https://eclipseide.org) ou [IntelliJ IDEA](https://www.jetbrains.com/pt-br/idea/)) na versão JDK ou superior para rodar este programa.
+É necessária uma IDE que rode Java (como [Eclipse](https://eclipseide.org) ou [IntelliJ IDEA](https://www.jetbrains.com/pt-br/idea/)) na versão JDK 17 ou superior para rodar este programa.
 
 ## Como rodar
 
