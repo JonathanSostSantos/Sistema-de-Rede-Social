@@ -7,6 +7,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representa um usuário na rede social.
+ * Classe responsável por manter as informações de um usuário individual no sistema.
+ *
+ * @author Jonathan Sost Dos Santos
+ */
 public class Usuario {
     private Integer id;
     private String nome;
@@ -17,6 +23,15 @@ public class Usuario {
     private List<Usuario> amigos;
     private List<Post> posts;
 
+    /**
+     * Construtor para criar um novo usuário sem passar ID como parâmetro.
+     * Utilizado também para inicializar as listas de amigos e posts.
+     *
+     * @param nome     O nome do usuário
+     * @param username O apelido do usuário que será utilizado para login
+     * @param email    O email do usuário
+     * @param senha    A senha do usuário de login
+     */
     public Usuario(String nome, String username, String email, String senha) {
         this.nome = nome;
         this.username = username;
@@ -27,6 +42,15 @@ public class Usuario {
         this.posts = new ArrayList<>();
     }
 
+    /**
+     * Construtor para criar um novo usuário passando ID como parâmetro.
+     *
+     * @param id       O ID do usuário
+     * @param nome     O nome do usuário
+     * @param username O apelido do usuário que será utilizado para login
+     * @param email    O email do usuário
+     * @param senha    A senha do usuário de login
+     */
     public Usuario(Integer id, String nome, String username, String email, String senha) {
         this.id = id;
         this.nome = nome;
@@ -87,6 +111,11 @@ public class Usuario {
         return posts;
     }
 
+    /**
+     * Retorna uma representação em String do usuário já formatado.
+     *
+     * @return String formatada com todos os dados do usuário que serão apresentados ao usuário
+     */
     @Override
     public String toString() {
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
@@ -95,6 +124,13 @@ public class Usuario {
                 "\nData de cadastro: " + dataCadastro.format(formatador) + "\n";
     }
 
+    /**
+     * Verifica se dois usuários são iguais com base no ID.
+     * Dois usuários são considerados iguais se possuem o mesmo ID.
+     *
+     * @param o Objeto a ser comparado
+     * @return true se os usuários têm o mesmo ID, false caso contrário
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -105,19 +141,39 @@ public class Usuario {
         return id.equals(usuario.id);
     }
 
+    /**
+     * Gera um código hash para o usuário com base no ID.
+     *
+     * @return O código hash gerado
+     */
     @Override
     public int hashCode() {
         return id.hashCode();
     }
 
+    /**
+     * Adiciona um amigo na lista de amizades do usuário.
+     *
+     * @param amigo O usuário a ser adicionado
+     */
     public void adicionarAmigo(Usuario amigo) {
         this.amigos.add(amigo);
     }
 
+    /**
+     * Remove um amigo da lista de amizades do usuário.
+     *
+     * @param amigo O usuário a ser removido
+     */
     public void removerAmigo(Usuario amigo) {
         this.amigos.remove(amigo);
     }
 
+    /**
+     * Adiciona um post na lista de posts do usuário.
+     *
+     * @param post O post a ser adicionado
+     */
     public void adicionarPost(Post post) {
         this.posts.add(post);
     }
