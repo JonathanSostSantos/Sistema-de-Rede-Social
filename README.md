@@ -1,5 +1,5 @@
 <p align="center">
-<img align="middle" src="logo.png" alt="FunWitter logo">
+<img align="middle" src="./imagens/logo.png" alt="FunWitter logo">
 </p>
 
 <h1 align="center"> Sistema de rede social - Funwitter</h1>
