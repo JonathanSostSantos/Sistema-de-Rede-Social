@@ -77,6 +77,8 @@ public class GerenciadorPosts {
 
     /**
      * Ordena a lista de posts por data de forma crescente.
+     * Para este método, eu realizei uma pesquisa de código no StackOverflow, postado pelo usuário Domchi.
+     * Referência: https://stackoverflow.com/questions/5927109/sort-objects-in-arraylist-by-date
      *
      * @param posts A lista de posts a ser ordenada
      * @return Os posts ordenados

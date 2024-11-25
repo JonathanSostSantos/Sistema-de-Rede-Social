@@ -352,7 +352,7 @@ public class MenuPrincipal {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
-            System.out.println(STR."A opção selecionada é inválida. \{e.getMessage()}");
+            System.out.println("A opção selecionada é inválida." + e.getMessage());
             return null;
         }
     }
@@ -409,6 +409,7 @@ public class MenuPrincipal {
 
     /**
      * Gera a chave que será utilizada para encriptar as senhas.
+     * Para este método, pedi que o ChatGPT me auxiliasse na criação.
      *
      * @return A chave de encriptação.
      * @throws Exception se não for possível gerar a chave
@@ -421,6 +422,7 @@ public class MenuPrincipal {
 
     /**
      * Encripta a senha utilizando a chave gerada.
+     * Para este método, pedi que o ChatGPT me auxiliasse na criação.
      *
      * @param senha A senha a ser encriptada.
      * @param chave A chave de encriptação.
@@ -436,6 +438,7 @@ public class MenuPrincipal {
 
     /**
      * Decripta a senha utilizando a chave gerada.
+     * Para este método, pedi que o ChatGPT me auxiliasse na criação.
      *
      * @param senhaEncriptada A senha a ser decriptada.
      * @param chave A chave de encriptação.
